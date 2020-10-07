@@ -1,0 +1,669 @@
+MATCH (n) detach delete n;
+
+// 心血管疾病
+CREATE (:RISK_FACTOR {chineseName: "年龄>40", englishName:"age > 40", comments: "动脉粥样硬化风险节点"});
+CREATE (:RISK_FACTOR {chineseName: "年龄>70", englishName:"age > 70", comments: "心衰风险节点"});
+CREATE (:RISK_FACTOR {chineseName: "性别", englishName:"man", comments: "动脉粥样硬化风险节点"});
+CREATE (:RISK_FACTOR {chineseName: "肥胖", englishName:"man", comments: "此处的肥胖指BMI>24"});
+CREATE (:RISK_FACTOR {chineseName: "高脂血症",englishName:"hyperlipemia", comments: "动脉粥样硬化风险节点"});
+CREATE (:RISK_FACTOR {chineseName: "心脏手术",englishName:"operation on heart", comments: "包括介入手术，CABG，导管检查及相应的麻醉过程"});
+CREATE (:RISK_FACTOR {chineseName: "正性肌力药物",englishName:"digitalis"});
+
+
+// 创建疾病大类节点,此处对于心律失常，构建室上速子节点,此处不区分冠脉粥样硬化和冠脉粥样硬化心脏病的区别,不对感染性心内膜炎做进一步的区分,此处心力衰竭不作category，也不进一步区分左心衰、右心衰和全心衰,由于主题原因，本处将所有风湿疾病视为一个疾病，不做更细化的区分，结缔组织病囊括在风湿病中
+CREATE (:DISEASE_CATEGORY {chineseName: "心律失常", englishName:"arrhythmia"});
+CREATE (:DISEASE {chineseName: "室上性心动过速",englishName:"paroxysmal supraventricular tachycardia", comments: "简称室上速，PVST"});
+CREATE (:DISEASE_CATEGORY {chineseName: "冠状动脉粥样硬化性心脏病",englishName:"coronary atherosclerotic heart disease, chd, icd"});
+CREATE (:DISEASE_CATEGORY {chineseName: "动脉粥样硬化",englishName:"atherosclerosis"});
+CREATE (:DISEASE_CATEGORY {chineseName: "心脏瓣膜病", englishName:"valvular heart disease"});
+CREATE (:DISEASE {chineseName: "心力衰竭",englishName:"heart failure"});
+CREATE (:DISEASE_CATEGORY {chineseName: "心肌病",englishName:"cardiomyopathy"});
+CREATE (:DISEASE {chineseName: "感染性心内膜炎",englishName:"infective endocarditis", comments: "IE"});
+// 由于内科学相关章节中未出现“高血压心脏病”的表述，而是把相关心脏病作为并发症看待，在此处，我们继承这一表述，取消高血压心脏病节点。同时，不区分原发性和继发性高血压
+CREATE (:DISEASE {chineseName: "高血压",englishName:"hypertension"});
+
+MATCH (u:DISEASE_CATEGORY {chineseName:'动脉粥样硬化'}), (r:DISEASE_CATEGORY {chineseName:'冠状动脉粥样硬化性心脏病'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p216"}]->(r);
+
+
+// 动脉粥样硬化及冠心病,（除冠脉粥样硬化外的）动脉粥样硬化,此处不区分冠脉粥样硬化和冠脉粥样硬化心脏病的区别,动脉粥样硬化
+CREATE (:DISEASE {chineseName: "周围动脉病",englishName:"peripheral arterial diease"});
+
+MATCH (u:DISEASE_CATEGORY {chineseName:'动脉粥样硬化'}), (r:DISEASE {chineseName:'周围动脉病'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p326"}]->(r);
+MATCH (u:DISEASE_CATEGORY {chineseName:'动脉粥样硬化'}), (r:DISEASE {chineseName:'周围动脉病'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p326"}]->(u);
+MATCH (u:DISEASE_CATEGORY {chineseName:'动脉粥样硬化'}), (r:DISEASE_CATEGORY {chineseName:'冠状动脉粥样硬化性心脏病'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p216"}]->(r);
+MATCH (u:DISEASE_CATEGORY {chineseName:'动脉粥样硬化'}), (r:DISEASE_CATEGORY {chineseName:'冠状动脉粥样硬化性心脏病'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p216"}]->(u);
+
+// 冠心病（不包括动脉粥样硬化）
+CREATE (:DISEASE {chineseName: "心绞痛",englishName:"angina", comments: "技术上说心绞痛应当区分的更为细致，但是实际诊断中有点难以区分，因此稳定性和不稳定性进行合并处理"});
+CREATE (:DISEASE {chineseName: "缺血性心肌病",englishName:"ischemic cardiomyopathy", comments:"慢性心肌缺血综合征的一种, ICM"});
+CREATE (:DISEASE {chineseName: "心肌梗死",englishName:"myocardial infraction", comments: "技术上应该可以分得更细，但是由于实际数据中诊断往往只写心肌梗死，所以就没有继续往下分"});
+
+MATCH (u:DISEASE_CATEGORY {chineseName:'冠状动脉粥样硬化性心脏病'}), (r:DISEASE {chineseName:'缺血性心肌病'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p228"}]->(r);
+MATCH (u:DISEASE_CATEGORY {chineseName:'冠状动脉粥样硬化性心脏病'}), (r:DISEASE {chineseName:'缺血性心肌病'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p228"}]->(u);
+MATCH (u:DISEASE_CATEGORY {chineseName:'冠状动脉粥样硬化性心脏病'}), (r:DISEASE {chineseName:'心肌梗死'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p229,234"}]->(r);
+MATCH (u:DISEASE_CATEGORY {chineseName:'冠状动脉粥样硬化性心脏病'}), (r:DISEASE {chineseName:'心肌梗死'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p229,234"}]->(u);
+MATCH (u:DISEASE_CATEGORY {chineseName:'冠状动脉粥样硬化性心脏病'}), (r:DISEASE {chineseName:'心绞痛'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p229"}]->(r);
+MATCH (u:DISEASE_CATEGORY {chineseName:'冠状动脉粥样硬化性心脏病'}), (r:DISEASE {chineseName:'心绞痛'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p229"}]->(u);
+
+
+// 心律失常
+CREATE (:DISEASE {chineseName: "窦性心动过速",englishName:"nodal tachycardia"});
+CREATE (:DISEASE {chineseName: "窦性心动过缓",englishName:"sinus bradycardia"});
+CREATE (:DISEASE {chineseName: "窦性心律不齐",englishName:"sinus arrhythmia"});
+CREATE (:DISEASE {chineseName: "窦性停搏",englishName:"sinus pause"});
+CREATE (:DISEASE {chineseName: "窦房传导阻滞",englishName:"sinoatrial block"});
+CREATE (:DISEASE {chineseName: "病态窦房结综合征",englishName:"sick sinus syndrome"});
+CREATE (:DISEASE {chineseName: "房性期前收缩",englishName:"premature atrial beats"});
+CREATE (:DISEASE {chineseName: "房性心动过速",englishName:"atrial tachcardia", comments: "简称房速"});
+CREATE (:DISEASE {chineseName: "心房扑动",englishName:"atrial flutter", comments: "简称房扑"});
+CREATE (:DISEASE {chineseName: "心房颤动",englishName:"atrial fibrillation", comments: "简称房颤"});
+CREATE (:DISEASE {chineseName: "预激综合征",englishName:"preexcitation syndrome"});
+CREATE (:DISEASE {chineseName: "室性期前收缩",englishName:"premature ventricular beats"});
+CREATE (:DISEASE {chineseName: "室性心动过速",englishName:"ventricular tachycardia", comments: "简称室速"});
+CREATE (:DISEASE {chineseName: "房室阻滞",englishName:"atrioventricular block"});
+
+// 此处室上速定义取狭义的室上速定义
+MATCH (u:DISEASE_CATEGORY {chineseName:'心律失常'}), (r:DISEASE {chineseName:'室上性心动过速'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p192"}]->(r);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心律失常'}), (r:DISEASE {chineseName:'室上性心动过速'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p192"}]->(u);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心律失常'}), (r:DISEASE {chineseName:'窦性心律不齐'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p192"}]->(r);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心律失常'}), (r:DISEASE {chineseName:'窦性心律不齐'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p192"}]->(u);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心律失常'}), (r:DISEASE {chineseName:'窦性心动过速'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p182"}]->(r);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心律失常'}), (r:DISEASE {chineseName:'窦性心动过速'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p182"}]->(u);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心律失常'}), (r:DISEASE {chineseName:'窦性心动过缓'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p182"}]->(r);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心律失常'}), (r:DISEASE {chineseName:'窦性心动过缓'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p183"}]->(u);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心律失常'}), (r:DISEASE {chineseName:'窦性停搏'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p183"}]->(r);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心律失常'}), (r:DISEASE {chineseName:'窦性停搏'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p183"}]->(u);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心律失常'}), (r:DISEASE {chineseName:'窦房传导阻滞'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p183"}]->(r);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心律失常'}), (r:DISEASE {chineseName:'窦房传导阻滞'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p183"}]->(u);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心律失常'}), (r:DISEASE {chineseName:'病态窦房结综合征'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p184"}]->(r);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心律失常'}), (r:DISEASE {chineseName:'病态窦房结综合征'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p184"}]->(u);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心律失常'}), (r:DISEASE {chineseName:'房性期前收缩'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p185"}]->(r);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心律失常'}), (r:DISEASE {chineseName:'房性期前收缩'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p185"}]->(u);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心律失常'}), (r:DISEASE {chineseName:'房性心动过速'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p185"}]->(r);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心律失常'}), (r:DISEASE {chineseName:'房性心动过速'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p185"}]->(u);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心律失常'}), (r:DISEASE {chineseName:'心房扑动'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p187"}]->(r);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心律失常'}), (r:DISEASE {chineseName:'心房扑动'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p187"}]->(u);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心律失常'}), (r:DISEASE {chineseName:'心房颤动'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p188"}]->(r);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心律失常'}), (r:DISEASE {chineseName:'心房颤动'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p188"}]->(u);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心律失常'}), (r:DISEASE {chineseName:'室性期前收缩'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p195"}]->(r);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心律失常'}), (r:DISEASE {chineseName:'室性期前收缩'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p195"}]->(u);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心律失常'}), (r:DISEASE {chineseName:'室性心动过速'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p197"}]->(r);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心律失常'}), (r:DISEASE {chineseName:'室性心动过速'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p197"}]->(u);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心律失常'}), (r:DISEASE {chineseName:'房室阻滞'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p201"}]->(r);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心律失常'}), (r:DISEASE {chineseName:'房室阻滞'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p201"}]->(u);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心律失常'}), (r:DISEASE {chineseName:'预激综合征'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p193"}]->(u);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心律失常'}), (r:DISEASE {chineseName:'预激综合征'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p193"}]->(u);
+
+// 心肌病
+CREATE (:DISEASE {chineseName: "扩张型心肌病", englishName:"dilated cardiomyopathy", comments: "酒精性心肌病，围生期心肌病，心动过速性心肌病，致心律失常性右心室心肌病，心肌致密化不全，心脏气球样变均属于扩心病的一种特定类型"});
+CREATE (:DISEASE {chineseName: "肥厚型心肌病", englishName:"hypertrophic cardiomyopathy"});
+CREATE (:DISEASE {chineseName: "限制型心肌病", englishName:"restrictive cardiomyopathy"});
+CREATE (:DISEASE {chineseName: "心肌炎", englishName:"myocarditis", comments:"主要指病毒性心肌炎"});
+MATCH (u:DISEASE_CATEGORY {chineseName:'心肌病'}), (r:DISEASE {chineseName:'扩张型心肌病'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p261"}]->(r);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心肌病'}), (r:DISEASE {chineseName:'扩张型心肌病'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p261"}]->(u);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心肌病'}), (r:DISEASE {chineseName:'肥厚型心肌病'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p266"}]->(r);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心肌病'}), (r:DISEASE {chineseName:'肥厚型心肌病'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p266"}]->(u);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心肌病'}), (r:DISEASE {chineseName:'限制型心肌病'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p269"}]->(r);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心肌病'}), (r:DISEASE {chineseName:'限制型心肌病'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p269"}]->(u);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心肌病'}), (r:DISEASE {chineseName:'心肌炎'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p270"}]->(r);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心肌病'}), (r:DISEASE {chineseName:'心肌炎'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p270"}]->(u);
+
+// 心瓣膜病
+// 我们不区分风湿性心脏瓣膜病与其他因素导致的心脏瓣膜病
+CREATE (:DISEASE {chineseName: "二尖瓣狭窄", englishName:"mitral stenosis"});
+CREATE (:DISEASE {chineseName: "二尖瓣关闭不全", englishName:"mitral stenosis"});
+CREATE (:DISEASE {chineseName: "主动脉瓣狭窄", englishName:"aortic stenosis"});
+CREATE (:DISEASE {chineseName: "主动脉瓣关闭不全", englishName:"aortic incompetence"});
+CREATE (:DISEASE {chineseName: "三尖瓣关闭不全", englishName:"tricuspid valve incompetence"});
+CREATE (:DISEASE {chineseName: "肺动脉瓣关闭不全", englishName:"pulmonary valve incompetence"});
+MATCH (u:DISEASE_CATEGORY {chineseName:'心脏瓣膜病'}), (r:DISEASE {chineseName:'二尖瓣狭窄'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p286"}]->(r);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心脏瓣膜病'}), (r:DISEASE {chineseName:'二尖瓣狭窄'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p286"}]->(u);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心脏瓣膜病'}), (r:DISEASE {chineseName:'二尖瓣关闭不全'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p291"}]->(r);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心脏瓣膜病'}), (r:DISEASE {chineseName:'二尖瓣关闭不全'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p291"}]->(u);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心脏瓣膜病'}), (r:DISEASE {chineseName:'主动脉瓣狭窄'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p295"}]->(r);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心脏瓣膜病'}), (r:DISEASE {chineseName:'主动脉瓣狭窄'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p295"}]->(u);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心脏瓣膜病'}), (r:DISEASE {chineseName:'主动脉瓣关闭不全'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p298"}]->(r);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心脏瓣膜病'}), (r:DISEASE {chineseName:'主动脉瓣关闭不全'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p298"}]->(u);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心脏瓣膜病'}), (r:DISEASE {chineseName:'三尖瓣关闭不全'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p301"}]->(r);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心脏瓣膜病'}), (r:DISEASE {chineseName:'三尖瓣关闭不全'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p301"}]->(u);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心脏瓣膜病'}), (r:DISEASE {chineseName:'肺动脉瓣关闭不全'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p301"}]->(r);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心脏瓣膜病'}), (r:DISEASE {chineseName:'肺动脉瓣关闭不全'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p301"}]->(u);
+
+// 主动脉疾病及周围血管病，由于与冠心病重复，此处不提及周围动脉疾病，由于相对独立，此处不够减category节点
+CREATE (:DISEASE {chineseName: "主动脉夹层",englishName:"aortic dissection", comments: "又称主动脉夹层动脉瘤"});
+
+
+// 肺动脉高压与肺源性心脏病
+CREATE (:DISEASE {chineseName: "肺动脉高压", englishName:"pulmonary arterial hypertension"});
+CREATE (:DISEASE {chineseName: "慢性肺源性心脏病",englishName:"chronic pulmonary heart disease"});
+MATCH (u:DISEASE {chineseName:'肺动脉高压'}), (r:DISEASE {chineseName:'慢性肺源性心脏病'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p109"}]->(r);
+
+// 其它疾病节点
+// 此处的节点创建并不完全严格遵守内科学教材，我们略去了一些数据集中极不常见的疾病（发生次数少于10次的）
+CREATE (:DISEASE {chineseName: "心室壁瘤",englishName:"cardiac aneurysm", comments: "心肌梗死（STEMI）并发症"});
+CREATE (:DISEASE {chineseName: "栓塞",englishName:"embolism", comments: "心肌梗死（STEMI）并发症，可指代肺、脑、肾、脾或四肢动脉等栓塞或肺动脉栓塞，本知识图谱中不对栓塞进行更细节的区分"});
+
+// 并发症关联
+MATCH (u:DISEASE {chineseName:'心肌梗死'}), (r:DISEASE {chineseName:'心室壁瘤'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p240"}]->(r);
+MATCH (u:DISEASE {chineseName:'心肌梗死'}), (r:DISEASE {chineseName:'栓塞'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p240"}]->(r);
+
+
+// （未在上文出现过的）并发症
+CREATE (:DISEASE {chineseName: "三尖瓣狭窄", englishName:"tricuspid valve stenosis"});
+CREATE (:DISEASE {chineseName: "阻塞性黄疸",englishName:"obstructive jaundice"});
+CREATE (:DISEASE {chineseName: "脑卒中",englishName:"stroke"});
+CREATE (:DISEASE {chineseName: "贫血", englishName:"arrhythmia"});
+CREATE (:DISEASE {chineseName: "甲状腺功能亢进", englishName:"hyperthyroidism"});
+CREATE (:DISEASE {chineseName: "甲状旁腺功能亢进", englishName:"hyperparathyroidism"});
+CREATE (:DISEASE {chineseName: "心肌淀粉样变性", englishName:"cardiac amyloidosis"});
+CREATE (:DISEASE {chineseName: "肺水肿", englishName:"pneumonedema", comments: "不区分急性慢性"});
+CREATE (:DISEASE {chineseName: "糖尿病",englishName:"diabetes"});
+CREATE (:DISEASE {chineseName: "甲状腺功能减退",englishName:"hypothyroidism"});
+// 由于主旨关系，将所有肾病统一描述
+CREATE (:DISEASE {chineseName: "肾脏疾病",englishName:"nephropathy", comments: "所有肾脏疾病统一归入此病"});
+CREATE (:DISEASE {chineseName: "原发性醛固酮增多症",englishName:"primary aldosteronism"});
+CREATE (:DISEASE {chineseName: "睡眠呼吸暂停",englishName:"sleep apnea"});
+CREATE (:DISEASE {chineseName: "二尖瓣脱垂",englishName:"mitral valve prolapse"});
+CREATE (:DISEASE {chineseName: "腱索断裂",englishName:"rupture of chordae tendinca"});
+CREATE (:DISEASE {chineseName: "结缔组织病", englishName: "connective tissue disease", comments: "参考ARA分类，包括类风湿关节炎，红斑狼疮，硬皮病，多肌炎/皮肌炎、抗磷脂综合征、大动脉炎、结节性多动脉炎、肉芽肿性多血管炎"});
+
+// 干预
+CREATE (:Treatment {chineseName: "利尿剂", englishName:"diuretic"});
+CREATE (:Treatment {chineseName: "ACEI", englishName:"ACEI"});
+CREATE (:Treatment {chineseName: "ARB", englishName:"ARB"});
+CREATE (:Treatment {chineseName: "醛固酮受体拮抗剂", englishName:"aldosterone antagonist"});
+CREATE (:Treatment {chineseName: "奎尼丁", englishName:"quinidine"});
+CREATE (:Treatment {chineseName: "美西律", englishName:"mexiletine"});
+CREATE (:Treatment {chineseName: "普罗帕酮", englishName:"propafenone"});
+CREATE (:Treatment {chineseName: "beta受体阻滞剂", englishName:"beta-blocker"});
+CREATE (:Treatment {chineseName: "正性肌力药物", englishName:"positive inotropic drug"});
+CREATE (:Treatment {chineseName: "起搏器", englishName:"pacemaker"});
+CREATE (:Treatment {chineseName: "除颤器", englishName:"ICD"});
+CREATE (:Treatment {chineseName: "心脏再同步化治疗", englishName: "CRT-D"});
+CREATE (:Treatment {chineseName: "胺碘酮", englishName:"amiodarone"});
+CREATE (:Treatment {chineseName: "维拉帕米", englishName:"verapamil"});
+CREATE (:Treatment {chineseName: "电复律", englishName:"electrical cardioversion"});
+CREATE (:Treatment {chineseName: "导管射频消融", englishName:"RFCA"});
+CREATE (:Treatment {chineseName: "血管扩张剂", englishName:"vasodilator"});
+CREATE (:Treatment {chineseName: "钙通道阻滞剂", englishName:"CCB"});
+CREATE (:Treatment {chineseName: "曲美他嗪", englishName:"trimetazidine"});
+CREATE (:Treatment {chineseName: "抗血小板药", englishName:"antiplatelet"});
+CREATE (:Treatment {chineseName: "尼可地尔", englishName:"nicorandil"});
+CREATE (:Treatment {chineseName: "调脂类药物", englishName:"lipid-lowering drug"});
+CREATE (:Treatment {chineseName: "PCI", englishName:"PCI"});
+CREATE (:Treatment {chineseName: "CABG", englishName:"CABG"});
+CREATE (:Treatment {chineseName: "溶栓疗法", englishName:"thrombolytic therapy"});
+CREATE (:Treatment {chineseName: "抗凝药", englishName:"anticoagulant"});
+CREATE (:Treatment {chineseName: "瓣膜手术", englishName:"cardiac valvular surgery"});
+
+MATCH (u:Treatment {chineseName:'ACEI'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 170"}]->(r);
+MATCH (u:Treatment {chineseName:'利尿剂'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 171"}]->(r);
+MATCH (u:Treatment {chineseName:'ARB'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 171"}]->(r);
+MATCH (u:Treatment {chineseName:'醛固酮受体拮抗剂'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 171"}]->(r);
+MATCH (u:Treatment {chineseName:'beta受体阻滞剂'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 172"}]->(r);
+MATCH (u:Treatment {chineseName:'正性肌力药物'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 172"}]->(r);
+
+MATCH (u:Treatment {chineseName:'奎尼丁'}), (r:DISEASE {chineseName:'房性期前收缩'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 206"}]->(r);
+MATCH (u:Treatment {chineseName:'奎尼丁'}), (r:DISEASE {chineseName:'室性期前收缩'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 206"}]->(r);
+MATCH (u:Treatment {chineseName:'奎尼丁'}), (r:DISEASE {chineseName:'心房扑动'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 206"}]->(r);
+MATCH (u:Treatment {chineseName:'奎尼丁'}), (r:DISEASE {chineseName:'心房颤动'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 206"}]->(r);
+MATCH (u:Treatment {chineseName:'奎尼丁'}), (r:DISEASE {chineseName:'室上性心动过速'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 206"}]->(r);
+MATCH (u:Treatment {chineseName:'奎尼丁'}), (r:DISEASE {chineseName:'预激综合征'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 206"}]->(r);
+MATCH (u:Treatment {chineseName:'奎尼丁'}), (r:DISEASE {chineseName:'室性心动过速'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 206"}]->(r);
+
+MATCH (u:Treatment {chineseName:'美西律'}), (r:DISEASE {chineseName:'室性心动过速'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 206"}]->(r);
+MATCH (u:Treatment {chineseName:'普罗帕酮'}), (r:DISEASE {chineseName:'室上性心动过速'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 206"}]->(r);
+MATCH (u:Treatment {chineseName:'普罗帕酮'}), (r:DISEASE {chineseName:'室性期前收缩'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 206"}]->(r);
+MATCH (u:Treatment {chineseName:'普罗帕酮'}), (r:DISEASE {chineseName:'室性心动过速'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 206"}]->(r);
+MATCH (u:Treatment {chineseName:'beta受体阻滞剂'}), (r:DISEASE {chineseName:'窦性心动过速'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 206"}]->(r);
+MATCH (u:Treatment {chineseName:'beta受体阻滞剂'}), (r:DISEASE {chineseName:'房性期前收缩'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 206"}]->(r);
+MATCH (u:Treatment {chineseName:'beta受体阻滞剂'}), (r:DISEASE {chineseName:'心房扑动'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 206"}]->(r);
+MATCH (u:Treatment {chineseName:'beta受体阻滞剂'}), (r:DISEASE {chineseName:'心房颤动'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 206"}]->(r);
+MATCH (u:Treatment {chineseName:'胺碘酮'}), (r:DISEASE {chineseName:'室上性心动过速'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 206"}]->(r);
+MATCH (u:Treatment {chineseName:'胺碘酮'}), (r:DISEASE {chineseName:'心房扑动'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 206"}]->(r);
+MATCH (u:Treatment {chineseName:'胺碘酮'}), (r:DISEASE {chineseName:'心房颤动'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 206"}]->(r);
+MATCH (u:Treatment {chineseName:'胺碘酮'}), (r:DISEASE {chineseName:'室性心动过速'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 206"}]->(r);
+MATCH (u:Treatment {chineseName:'维拉帕米'}), (r:DISEASE {chineseName:'室上性心动过速'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 206"}]->(r);
+MATCH (u:Treatment {chineseName:'维拉帕米'}), (r:DISEASE {chineseName:'预激综合征'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 206"}]->(r);
+MATCH (u:Treatment {chineseName:'维拉帕米'}), (r:DISEASE {chineseName:'心房颤动'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 206"}]->(r);
+MATCH (u:Treatment {chineseName:'维拉帕米'}), (r:DISEASE {chineseName:'心房扑动'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 206"}]->(r);
+
+MATCH (u:Treatment {chineseName:'电复律'}), (r:DISEASE {chineseName:'室性心动过速'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 208"}]->(r);
+MATCH (u:Treatment {chineseName:'电复律'}), (r:DISEASE {chineseName:'心房颤动'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 208"}]->(r);
+MATCH (u:Treatment {chineseName:'电复律'}), (r:DISEASE {chineseName:'心房扑动'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 208"}]->(r);
+MATCH (u:Treatment {chineseName:'电复律'}), (r:DISEASE {chineseName:'室上性心动过速'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 208"}]->(r);
+MATCH (u:Treatment {chineseName:'导管射频消融'}), (r:DISEASE {chineseName:'房性心动过速'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 212"}]->(r);
+MATCH (u:Treatment {chineseName:'导管射频消融'}), (r:DISEASE {chineseName:'心房扑动'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 212"}]->(r);
+MATCH (u:Treatment {chineseName:'导管射频消融'}), (r:DISEASE {chineseName:'心房颤动'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 212"}]->(r);
+MATCH (u:Treatment {chineseName:'导管射频消融'}), (r:DISEASE {chineseName:'预激综合征'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 212"}]->(r);
+MATCH (u:Treatment {chineseName:'导管射频消融'}), (r:DISEASE {chineseName:'室性期前收缩'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 212"}]->(r);
+MATCH (u:Treatment {chineseName:'导管射频消融'}), (r:DISEASE {chineseName:'室上性心动过速'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 212"}]->(r);
+MATCH (u:Treatment {chineseName:'导管射频消融'}), (r:DISEASE {chineseName:'室性心动过速'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 212"}]->(r);
+MATCH (u:Treatment {chineseName:'起搏器'}), (r:DISEASE {chineseName:'病态窦房结综合征'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 210"}]->(r);
+MATCH (u:Treatment {chineseName:'起搏器'}), (r:DISEASE {chineseName:'房室阻滞'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 210"}]->(r);
+MATCH (u:Treatment {chineseName:'起搏器'}), (r:DISEASE {chineseName:'心房颤动'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 210"}]->(r);
+MATCH (u:Treatment {chineseName:'起搏器'}), (r:DISEASE {chineseName:'肥厚型心肌病'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 210"}]->(r);
+MATCH (u:Treatment {chineseName:'起搏器'}), (r:DISEASE {chineseName:'扩张型心肌病'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 210"}]->(r);
+MATCH (u:Treatment {chineseName:'起搏器'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 210"}]->(r);
+MATCH (u:Treatment {chineseName:'心脏再同步化治疗'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 210"}]->(r);
+MATCH (u:Treatment {chineseName:'除颤器'}), (r:DISEASE {chineseName:'室性心动过速'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 209"}]->(r);
+MATCH (u:Treatment {chineseName:'除颤器'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 209"}]->(r);
+MATCH (u:Treatment {chineseName:'除颤器'}), (r:DISEASE {chineseName:'肥厚型心肌病'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 209"}]->(r);
+MATCH (u:Treatment {chineseName:'除颤器'}), (r:DISEASE {chineseName:'扩张型心肌病'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 209"}]->(r);
+MATCH (u:Treatment {chineseName:'beta受体阻滞剂'}), (r:DISEASE {chineseName:'心绞痛'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 225"}]->(r);
+MATCH (u:Treatment {chineseName:'血管扩张剂'}), (r:DISEASE {chineseName:'心绞痛'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 225"}]->(r);
+MATCH (u:Treatment {chineseName:'钙通道阻滞剂'}), (r:DISEASE {chineseName:'心绞痛'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 225"}]->(r);
+MATCH (u:Treatment {chineseName:'曲美他嗪'}), (r:DISEASE {chineseName:'心绞痛'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 225"}]->(r);
+MATCH (u:Treatment {chineseName:'尼可地尔'}), (r:DISEASE {chineseName:'心绞痛'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 225"}]->(r);
+MATCH (u:Treatment {chineseName:'抗血小板药'}), (r:DISEASE {chineseName:'心绞痛'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 225"}]->(r);
+MATCH (u:Treatment {chineseName:'调脂类药物'}), (r:DISEASE {chineseName:'心绞痛'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 225"}]->(r);
+MATCH (u:Treatment {chineseName:'ACEI'}), (r:DISEASE {chineseName:'心绞痛'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 225"}]->(r);
+MATCH (u:Treatment {chineseName:'ARB'}), (r:DISEASE {chineseName:'心绞痛'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 225"}]->(r);
+MATCH (u:Treatment {chineseName:'PCI'}), (r:DISEASE {chineseName:'心绞痛'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 226"}]->(r);
+MATCH (u:Treatment {chineseName:'CABG'}), (r:DISEASE {chineseName:'心绞痛'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 226"}]->(r);
+MATCH (u:Treatment {chineseName:'PCI'}), (r:DISEASE {chineseName:'缺血性心肌病'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 229"}]->(r);
+MATCH (u:Treatment {chineseName:'CABG'}), (r:DISEASE {chineseName:'缺血性心肌病'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 229"}]->(r);
+MATCH (u:Treatment {chineseName:'beta受体阻滞剂'}), (r:DISEASE {chineseName:'心肌梗死'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 242"}]->(r);
+MATCH (u:Treatment {chineseName:'血管扩张剂'}), (r:DISEASE {chineseName:'心肌梗死'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 242"}]->(r);
+MATCH (u:Treatment {chineseName:'抗血小板药'}), (r:DISEASE {chineseName:'心肌梗死'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 242"}]->(r);
+MATCH (u:Treatment {chineseName:'抗凝药'}), (r:DISEASE {chineseName:'心肌梗死'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 242"}]->(r);
+MATCH (u:Treatment {chineseName:'PCI'}), (r:DISEASE {chineseName:'心肌梗死'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 242"}]->(r);
+MATCH (u:Treatment {chineseName:'CABG'}), (r:DISEASE {chineseName:'心肌梗死'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 242"}]->(r);
+MATCH (u:Treatment {chineseName:'溶栓疗法'}), (r:DISEASE {chineseName:'心肌梗死'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 242"}]->(r);
+MATCH (u:Treatment {chineseName:'ACEI'}), (r:DISEASE {chineseName:'心肌梗死'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 242"}]->(r);
+MATCH (u:Treatment {chineseName:'ARB'}), (r:DISEASE {chineseName:'心肌梗死'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 242"}]->(r);
+MATCH (u:Treatment {chineseName:'调脂类药物'}), (r:DISEASE {chineseName:'心肌梗死'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 242"}]->(r);
+MATCH (u:Treatment {chineseName:'利尿剂'}), (r:DISEASE {chineseName:'高血压'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 254"}]->(r);
+MATCH (u:Treatment {chineseName:'beta受体阻滞剂'}), (r:DISEASE {chineseName:'高血压'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 254"}]->(r);
+MATCH (u:Treatment {chineseName:'钙通道阻滞剂'}), (r:DISEASE {chineseName:'高血压'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 254"}]->(r);
+MATCH (u:Treatment {chineseName:'ACEI'}), (r:DISEASE {chineseName:'高血压'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 254"}]->(r);
+MATCH (u:Treatment {chineseName:'ARB'}), (r:DISEASE {chineseName:'高血压'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 254"}]->(r);
+MATCH (u:Treatment {chineseName:'ACEI'}), (r:DISEASE {chineseName:'扩张型心肌病'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 264"}]->(r);
+MATCH (u:Treatment {chineseName:'ARB'}), (r:DISEASE {chineseName:'扩张型心肌病'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 264"}]->(r);
+MATCH (u:Treatment {chineseName:'醛固酮受体拮抗剂'}), (r:DISEASE {chineseName:'扩张型心肌病'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 264"}]->(r);
+MATCH (u:Treatment {chineseName:'利尿剂'}), (r:DISEASE {chineseName:'扩张型心肌病'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 264"}]->(r);
+MATCH (u:Treatment {chineseName:'正性肌力药物'}), (r:DISEASE {chineseName:'扩张型心肌病'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 264"}]->(r);
+MATCH (u:Treatment {chineseName:'beta受体阻滞剂'}), (r:DISEASE {chineseName:'扩张型心肌病'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 264"}]->(r);
+MATCH (u:Treatment {chineseName:'beta受体阻滞剂'}), (r:DISEASE {chineseName:'肥厚型心肌病'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 264"}]->(r);
+MATCH (u:Treatment {chineseName:'利尿剂'}), (r:DISEASE {chineseName:'二尖瓣狭窄'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 289"}]->(r);
+MATCH (u:Treatment {chineseName:'瓣膜手术'}), (r:DISEASE {chineseName:'二尖瓣狭窄'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 290"}]->(r);
+MATCH (u:Treatment {chineseName:'ACEI'}), (r:DISEASE {chineseName:'二尖瓣关闭不全'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 294"}]->(r);
+MATCH (u:Treatment {chineseName:'瓣膜手术'}), (r:DISEASE {chineseName:'二尖瓣关闭不全'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 294"}]->(r);
+MATCH (u:Treatment {chineseName:'瓣膜手术'}), (r:DISEASE {chineseName:'主动脉瓣狭窄'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 297"}]->(r);
+MATCH (u:Treatment {chineseName:'血管扩张剂'}), (r:DISEASE {chineseName:'主动脉瓣关闭不全'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 300"}]->(r);
+MATCH (u:Treatment {chineseName:'瓣膜手术'}), (r:DISEASE {chineseName:'主动脉瓣关闭不全'}) CREATE (u)-[:Cure {reference: "内科学 人卫第9版 300"}]->(r);
+
+
+// 心力衰竭风险因子、病因及诱因，并未严格纳入所有因素。综合考虑，但凡数据中不存在的信息,比如体力消耗及感染，这种信息我们不可能在本次入院提前获知,均不纳入知识图谱
+MATCH (u:DISEASE {chineseName:'心肌梗死'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 163", comments: "原发性心肌损害"}]->(r);
+MATCH (u:DISEASE {chineseName:'心绞痛'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 163", comments: "原发性心肌损害"}]->(r);
+MATCH (u:DISEASE {chineseName:'缺血性心肌病'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 163", comments: "原发性心肌损害, 此处的扩心病包含了右室心肌病、心肌致密化不全等子类"}]->(r);
+MATCH (u:DISEASE {chineseName:'扩张型心肌病'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p163,261", comments: "原发性心肌损害"}]->(r);
+MATCH (u:DISEASE {chineseName:'肥厚型心肌病'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p163,266", comments: "原发性心肌损害"}]->(r);
+MATCH (u:DISEASE {chineseName:'心肌炎'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p163", comments: "原发性心肌损害"}]->(r);
+MATCH (u:DISEASE {chineseName:'糖尿病'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p164", comments: "继发性心肌损害"}]->(r);
+// 此处内科学的表述是“甲状腺疾病”会导致心力衰竭，综合内分泌系统相关章节中的表述，可确定甲状腺疾病应当就是指甲亢和甲减
+MATCH (u:DISEASE {chineseName:'甲状腺功能减退'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p164", comments: "继发性心肌损害，前负荷过重"}]->(r);
+MATCH (u:DISEASE {chineseName:'甲状腺功能亢进'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p164,681", comments: "继发性心肌损害，前负荷过重"}]->(r);
+MATCH (u:DISEASE {chineseName:'心肌淀粉样变性'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p164, 689", comments: "继发性心肌损害"}]->(r);
+MATCH (u:DISEASE {chineseName:'结缔组织病'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p164", comments: "继发性心肌损害"}]->(r);
+
+MATCH (u:DISEASE {chineseName:'高血压'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p164,166", comments: "后负荷过重"}]->(r);
+MATCH (u:DISEASE {chineseName:'主动脉瓣狭窄'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p164", comments: "后负荷过重"}]->(r);
+MATCH (u:DISEASE {chineseName:'肺动脉高压'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p164", comments: "后负荷过重"}]->(r);
+MATCH (u:DISEASE {chineseName:'二尖瓣关闭不全'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p164", comments: "前负荷过重"}]->(r);
+MATCH (u:DISEASE {chineseName:'三尖瓣关闭不全'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p164", comments: "前负荷过重"}]->(r);
+MATCH (u:DISEASE {chineseName:'限制型心肌病'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p164", comments: "前负荷不足"}]->(r);
+MATCH (u:DISEASE {chineseName:'二尖瓣狭窄'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p164", comments: "前负荷不足"}]->(r);
+MATCH (u:DISEASE {chineseName:'主动脉瓣关闭不全'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p299"}]->(r);
+MATCH (u:DISEASE {chineseName:'贫血'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p164", comments: "前负荷过重"}]->(r);
+MATCH (u:DISEASE {chineseName:'心肌梗死'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p164", comments: "前负荷过重"}]->(r);
+MATCH (u:DISEASE_CATEGORY {chineseName:'冠状动脉粥样硬化性心脏病'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p166", comments: "病因"}]->(r);
+MATCH (u:DISEASE {chineseName:'慢性肺源性心脏病'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p166"}]->(r);
+MATCH (u:RISK_FACTOR {chineseName:'年龄>70'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p166", comments: "风险因子"}]->(r);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心律失常'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p164", comments: "诱因"}]->(r);
+// 心力衰竭风险因子、病因及诱因描述完毕
+
+// 心力衰竭导致其他疾病
+// 注意，心力衰竭会造成心室重塑，造成心肌肥厚等症状，但是参考“内科学 心肌疾病”章节，似乎这样的心肌肥厚并不属于扩心病
+MATCH (u:DISEASE {chineseName:'心力衰竭'}), (r:DISEASE_CATEGORY {chineseName:'心律失常'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p164"}]->(r);
+// 描述完毕
+
+
+
+// 导致心律失常的因素,此处存在生理性因素及病理性因素，我们略过了一些数据中不存在的信息以及课本中描述的不够明确的信息，或者无法通过本次入院数据推测下次入院存在的信息,酸碱平衡 电解质紊乱 神经与体液调节功能失调也会造成心律失常，但是看上去似乎不是一种治不好的病
+MATCH (u:DISEASE_CATEGORY {chineseName:'冠状动脉粥样硬化性心脏病'}), (r:DISEASE_CATEGORY {chineseName:'心律失常'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p178"}]->(r);
+MATCH (u:DISEASE {chineseName:'高血压'}), (r:DISEASE_CATEGORY {chineseName:'心律失常'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p178"}]->(r);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心肌病'}), (r:DISEASE_CATEGORY {chineseName:'心律失常'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p178"}]->(r);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心脏瓣膜病'}), (r:DISEASE_CATEGORY {chineseName:'心律失常'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p178"}]->(r);
+MATCH (u:DISEASE {chineseName:'心肌炎'}), (r:DISEASE_CATEGORY {chineseName:'心律失常'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p178"}]->(r);
+MATCH (u:DISEASE {chineseName:'甲状腺功能亢进'}), (r:DISEASE_CATEGORY {chineseName:'心律失常'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p178"}]->(r);
+MATCH (u:DISEASE {chineseName:'贫血'}), (r:DISEASE_CATEGORY {chineseName:'心律失常'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p178"}]->(r);
+MATCH (u:DISEASE {chineseName:'脑卒中'}), (r:DISEASE_CATEGORY {chineseName:'心律失常'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p178"}]->(r);
+MATCH (u:RISK_FACTOR {chineseName:'心脏手术'}), (r:DISEASE_CATEGORY {chineseName:'心律失常'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p178"}]->(r);
+MATCH (u:DISEASE {chineseName:'甲状腺功能亢进'}), (r:DISEASE {chineseName:'窦性心动过速'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p182"}]->(r);
+MATCH (u:DISEASE {chineseName:'贫血'}), (r:DISEASE {chineseName:'窦性心动过速'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p182"}]->(r);
+MATCH (u:DISEASE {chineseName:'心绞痛'}), (r:DISEASE {chineseName:'窦性心动过速'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p182"}]->(r);
+MATCH (u:DISEASE {chineseName:'缺血性心肌病'}), (r:DISEASE {chineseName:'窦性心动过速'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p182"}]->(r);
+MATCH (u:DISEASE {chineseName:'心力衰竭'}), (r:DISEASE {chineseName:'窦性心动过速'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p182"}]->(r);
+MATCH (u:DISEASE {chineseName:'甲状腺功能减退'}), (r:DISEASE {chineseName:'窦性心动过缓'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p183"}]->(r);
+MATCH (u:DISEASE {chineseName:'阻塞性黄疸'}), (r:DISEASE {chineseName:'窦性心动过缓'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p183"}]->(r);
+MATCH (u:DISEASE {chineseName:'心肌梗死'}), (r:DISEASE {chineseName:'窦性心动过缓'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p183"}]->(r);
+MATCH (u:DISEASE {chineseName:'病态窦房结综合征'}), (r:DISEASE {chineseName:'窦性心动过缓'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p183"}]->(r);
+MATCH (u:DISEASE {chineseName:'心肌梗死'}), (r:DISEASE {chineseName:'窦性停搏'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p183"}]->(r);
+MATCH (u:DISEASE {chineseName:'脑卒中'}), (r:DISEASE {chineseName:'窦性停搏'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p183"}]->(r);
+MATCH (u:DISEASE {chineseName:'病态窦房结综合征'}), (r:DISEASE {chineseName:'窦性停搏'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p183"}]->(r);
+MATCH (u:DISEASE {chineseName:'甲状腺功能减退'}), (r:DISEASE {chineseName:'病态窦房结综合征'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p184"}]->(r);
+MATCH (u:DISEASE {chineseName:'心肌淀粉样变性'}), (r:DISEASE {chineseName:'病态窦房结综合征'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p184"}]->(r);
+MATCH (u:DISEASE {chineseName:'脑卒中'}), (r:DISEASE {chineseName:'病态窦房结综合征'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p184"}]->(r);
+MATCH (u:RISK_FACTOR {chineseName:'正性肌力药物'}), (r:DISEASE {chineseName:'病态窦房结综合征'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p184"}]->(r);
+MATCH (u:DISEASE {chineseName:'病态窦房结综合征'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p184"}]->(r);
+MATCH (u:DISEASE {chineseName:'病态窦房结综合征'}), (r:DISEASE {chineseName:'心绞痛'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p184"}]->(r);
+
+MATCH (u:DISEASE_CATEGORY {chineseName:'心肌病'}), (r:DISEASE {chineseName:'房性期前收缩'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p185"}]->(r);
+MATCH (u:DISEASE_CATEGORY {chineseName:'冠状动脉粥样硬化性心脏病'}), (r:DISEASE {chineseName:'房性期前收缩'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p185"}]->(r);
+MATCH (u:DISEASE {chineseName:'慢性肺源性心脏病'}), (r:DISEASE {chineseName:'房性期前收缩'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p185"}]->(r);
+
+MATCH (u:RISK_FACTOR {chineseName:'正性肌力药物'}), (r:DISEASE {chineseName:'房性心动过速'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p185"}]->(r);
+MATCH (u:RISK_FACTOR {chineseName:'心脏手术'}), (r:DISEASE {chineseName:'房性心动过速'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p185"}]->(r);
+MATCH (u:DISEASE_CATEGORY {chineseName:'冠状动脉粥样硬化性心脏病'}), (r:DISEASE {chineseName:'房性心动过速'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p185"}]->(r);
+MATCH (u:DISEASE {chineseName:'慢性肺源性心脏病'}), (r:DISEASE {chineseName:'房性心动过速'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p185"}]->(r);
+MATCH (u:DISEASE {chineseName:'房性心动过速'}), (r:DISEASE {chineseName:'心房颤动'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p185"}]->(r);
+
+MATCH (u:DISEASE_CATEGORY {chineseName:'冠状动脉粥样硬化性心脏病'}), (r:DISEASE {chineseName:'心房扑动'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p187"}]->(r);
+MATCH (u:DISEASE {chineseName:'高血压'}), (r:DISEASE {chineseName:'心房扑动'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p187"}]->(r);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心肌病'}), (r:DISEASE {chineseName:'心房扑动'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p187"}]->(r);
+MATCH (u:DISEASE {chineseName:'心力衰竭'}), (r:DISEASE {chineseName:'心房扑动'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p187"}]->(r);
+MATCH (u:DISEASE {chineseName:'栓塞'}), (r:DISEASE {chineseName:'心房扑动'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p187"}]->(r);
+MATCH (u:DISEASE {chineseName:'甲状腺功能亢进'}), (r:DISEASE {chineseName:'心房扑动'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p187"}]->(r);
+MATCH (u:DISEASE {chineseName:'二尖瓣狭窄'}), (r:DISEASE {chineseName:'心房扑动'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p187"}]->(r);
+MATCH (u:DISEASE {chineseName:'三尖瓣狭窄'}), (r:DISEASE {chineseName:'心房扑动'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p187"}]->(r);
+MATCH (u:DISEASE {chineseName:'二尖瓣关闭不全'}), (r:DISEASE {chineseName:'心房扑动'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p187"}]->(r);
+MATCH (u:DISEASE {chineseName:'三尖瓣关闭不全'}), (r:DISEASE {chineseName:'心房扑动'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p187"}]->(r);
+MATCH (u:DISEASE {chineseName:'心房扑动'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p187"}]->(r);
+MATCH (u:DISEASE {chineseName:'心房扑动'}), (r:DISEASE {chineseName:'心绞痛'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p187"}]->(r);
+MATCH (u:DISEASE {chineseName:'心房扑动'}), (r:DISEASE {chineseName:'栓塞'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p187"}]->(r);
+MATCH (u:DISEASE {chineseName:'心房扑动'}), (r:DISEASE {chineseName:'心房颤动'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p187"}]->(r);
+MATCH (u:RISK_FACTOR {chineseName:'年龄>70'}), (r:DISEASE {chineseName:'心房颤动'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p188", comments: "此处的真实风险因子事实上是高龄，70岁仅仅是人工选择的截断点"}]->(r);
+MATCH (u:DISEASE {chineseName:'高血压'}), (r:DISEASE {chineseName:'心房颤动'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p188"}]->(r);
+MATCH (u:DISEASE {chineseName:'慢性肺源性心脏病'}), (r:DISEASE {chineseName:'心房颤动'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p188"}]->(r);
+MATCH (u:DISEASE {chineseName:'预激综合征'}), (r:DISEASE {chineseName:'心房颤动'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p188"}]->(r);
+MATCH (u:DISEASE {chineseName:'甲状腺功能亢进'}), (r:DISEASE {chineseName:'心房颤动'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p188"}]->(r);
+MATCH (u:DISEASE {chineseName:'二尖瓣狭窄'}), (r:DISEASE {chineseName:'心房颤动'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p188"}]->(r);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心肌病'}), (r:DISEASE {chineseName:'心房颤动'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p188"}]->(r);
+MATCH (u:DISEASE_CATEGORY {chineseName:'冠状动脉粥样硬化性心脏病'}), (r:DISEASE {chineseName:'心房颤动'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p188"}]->(r);
+MATCH (u:DISEASE {chineseName:'心房颤动'}), (r:DISEASE {chineseName:'脑卒中'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p188"}]->(r);
+MATCH (u:DISEASE {chineseName:'心房颤动'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p164,188"}]->(r);
+MATCH (u:DISEASE {chineseName:'心房颤动'}), (r:DISEASE {chineseName:'栓塞'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p188"}]->(r);
+MATCH (u:DISEASE {chineseName:'室上性心动过速'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p192"}]->(r);
+MATCH (u:DISEASE {chineseName:'预激综合征'}), (r:DISEASE {chineseName:'室上性心动过速'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p193"}]->(r);
+MATCH (u:DISEASE {chineseName:'预激综合征'}), (r:DISEASE {chineseName:'心房扑动'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p194"}]->(r);
+MATCH (u:DISEASE_CATEGORY {chineseName:'冠状动脉粥样硬化性心脏病'}), (r:DISEASE {chineseName:'室上性心动过速'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p194"}]->(r);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心肌病'}), (r:DISEASE {chineseName:'室上性心动过速'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p194"}]->(r);
+MATCH (u:DISEASE {chineseName:'高血压'}), (r:DISEASE {chineseName:'室性期前收缩'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p196"}]->(r);
+MATCH (u:DISEASE_CATEGORY {chineseName:'冠状动脉粥样硬化性心脏病'}), (r:DISEASE {chineseName:'室性期前收缩'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p196"}]->(r);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心肌病'}), (r:DISEASE {chineseName:'室性期前收缩'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p196"}]->(r);
+MATCH (u:DISEASE {chineseName:'心肌炎'}), (r:DISEASE {chineseName:'室性期前收缩'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p196"}]->(r);;
+MATCH (u:DISEASE {chineseName:'室性期前收缩'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p196"}]->(r);
+MATCH (u:DISEASE {chineseName:'室性期前收缩'}), (r:DISEASE {chineseName:'心绞痛'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p196"}]->(r);
+MATCH (u:DISEASE_CATEGORY {chineseName:'冠状动脉粥样硬化性心脏病'}), (r:DISEASE {chineseName:'室性心动过速'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p197"}]->(r);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心肌病'}), (r:DISEASE {chineseName:'室性心动过速'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p197"}]->(r);
+MATCH (u:DISEASE {chineseName:'心力衰竭'}), (r:DISEASE {chineseName:'室性心动过速'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p197"}]->(r);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心脏瓣膜病'}), (r:DISEASE {chineseName:'室性心动过速'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p197"}]->(r);
+MATCH (u:DISEASE {chineseName:'心肌梗死'}), (r:DISEASE {chineseName:'房室阻滞'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p202"}]->(r);
+MATCH (u:DISEASE {chineseName:'心肌炎'}), (r:DISEASE {chineseName:'房室阻滞'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p202"}]->(r);
+MATCH (u:DISEASE {chineseName:'感染性心内膜炎'}), (r:DISEASE {chineseName:'房室阻滞'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p202"}]->(r);
+MATCH (u:DISEASE_CATEGORY {chineseName:'心肌病'}), (r:DISEASE {chineseName:'房室阻滞'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p202"}]->(r);
+MATCH (u:DISEASE {chineseName:'主动脉瓣狭窄'}), (r:DISEASE {chineseName:'房室阻滞'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p202"}]->(r);
+MATCH (u:DISEASE {chineseName:'高血压'}), (r:DISEASE {chineseName:'房室阻滞'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p202"}]->(r);
+MATCH (u:DISEASE {chineseName:'心肌淀粉样变性'}), (r:DISEASE {chineseName:'房室阻滞'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p202"}]->(r);
+MATCH (u:RISK_FACTOR {chineseName:'正性肌力药物'}), (r:DISEASE {chineseName:'房室阻滞'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p202"}]->(r);
+MATCH (u:DISEASE {chineseName:'房室阻滞'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p202"}]->(r);
+MATCH (u:DISEASE {chineseName:'房室阻滞'}), (r:DISEASE {chineseName:'脑卒中'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p202"}]->(r);
+MATCH (u:DISEASE {chineseName:'房室阻滞'}), (r:DISEASE {chineseName:'心绞痛'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p202"}]->(r);
+// 描述完毕
+
+
+
+
+// 动脉粥样硬化关联
+MATCH (u:RISK_FACTOR {chineseName:'年龄>40'}), (r:DISEASE_CATEGORY {chineseName:'动脉粥样硬化'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p213"}]->(r);
+MATCH (u:RISK_FACTOR {chineseName:'性别'}), (r:DISEASE_CATEGORY {chineseName:'动脉粥样硬化'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p213"}]->(r);
+MATCH (u:RISK_FACTOR {chineseName:'肥胖'}), (r:DISEASE_CATEGORY {chineseName:'动脉粥样硬化'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p213"}]->(r);
+MATCH (u:DISEASE {chineseName:'糖尿病'}), (r:DISEASE_CATEGORY {chineseName:'动脉粥样硬化'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p213"}]->(r);
+MATCH (u:DISEASE {chineseName:'高血压'}), (r:DISEASE_CATEGORY {chineseName:'动脉粥样硬化'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p213"}]->(r);
+MATCH (u:RISK_FACTOR {chineseName:'高脂血症'}), (r:DISEASE_CATEGORY {chineseName:'动脉粥样硬化'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p213"}]->(r);
+MATCH (u:DISEASE {chineseName:'心绞痛'}), (r:DISEASE {chineseName:'心肌梗死'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p224"}]->(r);
+MATCH (u:DISEASE {chineseName:'缺血性心肌病'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p228"}]->(r);
+MATCH (u:DISEASE {chineseName:'缺血性心肌病'}), (r:DISEASE_CATEGORY {chineseName:'心律失常'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p228"}]->(r);
+MATCH (u:DISEASE {chineseName:'缺血性心肌病'}), (r:DISEASE {chineseName:'栓塞'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p228"}]->(r);
+MATCH (u:DISEASE {chineseName:'缺血性心肌病'}), (r:DISEASE {chineseName:'肺水肿'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p228"}]->(r);
+MATCH (u:DISEASE {chineseName:'缺血性心肌病'}), (r:DISEASE {chineseName:'心绞痛'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p228"}]->(r);
+MATCH (u:DISEASE {chineseName:'心绞痛'}), (r:DISEASE {chineseName:'心肌梗死'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p234"}]->(r);
+MATCH (u:DISEASE {chineseName:'心肌梗死'}), (r:DISEASE {chineseName:'栓塞'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p234"}]->(r);
+MATCH (u:DISEASE {chineseName:'心肌梗死'}), (r:DISEASE {chineseName:'心绞痛'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p234"}]->(r);
+MATCH (u:DISEASE {chineseName:'心肌梗死'}), (r:DISEASE {chineseName:'心室壁瘤'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 235"}]->(r);
+MATCH (u:DISEASE {chineseName:'心肌梗死'}), (r:DISEASE {chineseName:'心绞痛'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 235"}]->(r);
+MATCH (u:DISEASE {chineseName:'心肌梗死'}), (r:DISEASE {chineseName:'心肌梗死'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p234"}]->(r);
+MATCH (u:DISEASE {chineseName:'心肌梗死'}), (r:DISEASE_CATEGORY {chineseName:'心律失常'}) CREATE (u)-[:CAUSE {reference: "病理学 人卫第9版 p160"}]->(r);
+// 描述完毕
+
+
+// 高血压关联,此处跳过高血压性心脏病
+MATCH (u:RISK_FACTOR {chineseName:'肥胖'}), (r:DISEASE {chineseName:'高血压'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p248"}]->(r);
+MATCH (u:DISEASE {chineseName:'睡眠呼吸暂停'}), (r:DISEASE {chineseName:'高血压'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p248"}]->(r);
+MATCH (u:DISEASE {chineseName:'高血压'}), (r:DISEASE {chineseName:'脑卒中'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p248"}]->(r);
+MATCH (u:DISEASE {chineseName:'高血压'}), (r:DISEASE_CATEGORY {chineseName:'动脉粥样硬化'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p248"}]->(r);
+MATCH (u:DISEASE {chineseName:'高血压'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p249"}]->(r);
+MATCH (u:DISEASE {chineseName:'高血压'}), (r:DISEASE_CATEGORY {chineseName:'冠状动脉粥样硬化性心脏病'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p249"}]->(r);
+MATCH (u:DISEASE {chineseName:'高血压'}), (r:DISEASE {chineseName:'肾脏疾病'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p250, 病理学 人卫第9版 p164"}]->(r);
+MATCH (u:DISEASE {chineseName:'高血压'}), (r:DISEASE {chineseName:'主动脉夹层'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p250,323"}]->(r);
+MATCH (u:DISEASE {chineseName:'肾脏疾病'}), (r:DISEASE {chineseName:'高血压'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p259"}]->(r);
+MATCH (u:DISEASE {chineseName:'原发性醛固酮增多症'}), (r:DISEASE {chineseName:'高血压'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p259"}]->(r);
+MATCH (u:DISEASE {chineseName:'甲状腺功能亢进'}), (r:DISEASE {chineseName:'高血压'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p259"}]->(r);
+MATCH (u:DISEASE {chineseName:'甲状腺功能减退'}), (r:DISEASE {chineseName:'高血压'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p259"}]->(r);
+MATCH (u:DISEASE {chineseName:'甲状旁腺功能亢进'}), (r:DISEASE {chineseName:'高血压'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p259"}]->(r);
+MATCH (u:DISEASE {chineseName:'主动脉瓣关闭不全'}), (r:DISEASE {chineseName:'高血压'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p259"}]->(r);
+MATCH (u:DISEASE {chineseName:'房室阻滞'}), (r:DISEASE {chineseName:'高血压'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p259"}]->(r);
+// 描述完毕
+
+
+
+// 心肌疾病
+MATCH (u:DISEASE_CATEGORY {chineseName:'心肌病'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p270"}]->(r);
+MATCH (u:DISEASE {chineseName:'心肌炎'}), (r:DISEASE {chineseName:'扩张型心肌病'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p270"}]->(r);
+MATCH (u:DISEASE {chineseName:'结缔组织病'}), (r:DISEASE {chineseName:'扩张型心肌病'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p262"}]->(r);
+MATCH (u:DISEASE {chineseName:'扩张型心肌病'}), (r:DISEASE_CATEGORY {chineseName:'心律失常'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p261"}]->(r);
+MATCH (u:DISEASE {chineseName:'扩张型心肌病'}), (r:DISEASE {chineseName:'栓塞'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p261"}]->(r);
+MATCH (u:DISEASE {chineseName:'扩张型心肌病'}), (r:DISEASE {chineseName:'二尖瓣关闭不全'}) CREATE (u)-[:CAUSE {reference: "病理学 人卫第9版 p173"}]->(r);
+MATCH (u:DISEASE {chineseName:'扩张型心肌病'}), (r:DISEASE {chineseName:'三尖瓣关闭不全'}) CREATE (u)-[:CAUSE {reference: "病理学 人卫第9版 p173"}]->(r);
+MATCH (u:DISEASE {chineseName:'扩张型心肌病'}), (r:DISEASE_CATEGORY {chineseName:'心律失常'}) CREATE (u)-[:CAUSE {reference: "病理学 人卫第9版 p174"}]->(r);
+MATCH (u:DISEASE {chineseName:'肥厚型心肌病'}), (r:DISEASE_CATEGORY {chineseName:'心律失常'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p266"}]->(r);
+MATCH (u:DISEASE {chineseName:'肥厚型心肌病'}), (r:DISEASE {chineseName:'心房颤动'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p266"}]->(r);
+MATCH (u:DISEASE {chineseName:'限制型心肌病'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p266"}]->(r);
+MATCH (u:DISEASE {chineseName:'心肌炎'}), (r:DISEASE_CATEGORY {chineseName:'心律失常'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p266"}]->(r);
+// 描述完毕
+
+
+// 心脏瓣膜病
+MATCH (u:DISEASE {chineseName:'结缔组织病'}), (r:DISEASE {chineseName:'二尖瓣狭窄'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p286"}]->(r);
+MATCH (u:DISEASE {chineseName:'二尖瓣狭窄'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p287, 164"}]->(r);
+MATCH (u:DISEASE {chineseName:'二尖瓣狭窄'}), (r:DISEASE {chineseName:'肺动脉高压'}) CREATE (u)-[:CAUSE {reference: "病理学 人卫第9版 p172"}]->(r);
+MATCH (u:DISEASE {chineseName:'二尖瓣狭窄'}), (r:DISEASE {chineseName:'心房颤动'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p289"}]->(r);
+MATCH (u:DISEASE {chineseName:'二尖瓣狭窄'}), (r:DISEASE {chineseName:'肺水肿'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p289"}]->(r);
+MATCH (u:DISEASE {chineseName:'二尖瓣狭窄'}), (r:DISEASE {chineseName:'栓塞'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p289"}]->(r);
+MATCH (u:DISEASE {chineseName:'二尖瓣狭窄'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p289"}]->(r);
+MATCH (u:DISEASE {chineseName:'二尖瓣狭窄'}), (r:DISEASE {chineseName:'感染性心内膜炎'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p289"}]->(r);
+
+MATCH (u:DISEASE_CATEGORY {chineseName:'冠状动脉粥样硬化性心脏病'}), (r:DISEASE {chineseName:'二尖瓣关闭不全'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p291"}]->(r);
+MATCH (u:DISEASE {chineseName:'感染性心内膜炎'}), (r:DISEASE {chineseName:'二尖瓣关闭不全'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p291"}]->(r);
+MATCH (u:DISEASE {chineseName:'肥厚型心肌病'}), (r:DISEASE {chineseName:'二尖瓣关闭不全'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p291"}]->(r);
+MATCH (u:DISEASE {chineseName:'二尖瓣脱垂'}), (r:DISEASE {chineseName:'二尖瓣关闭不全'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p291"}]->(r);
+MATCH (u:DISEASE {chineseName:'腱索断裂'}), (r:DISEASE {chineseName:'二尖瓣关闭不全'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p291"}]->(r);
+MATCH (u:DISEASE {chineseName:'二尖瓣关闭不全'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p291"}]->(r);
+MATCH (u:DISEASE {chineseName:'二尖瓣关闭不全'}), (r:DISEASE {chineseName:'肺水肿'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p292"}]->(r);
+MATCH (u:DISEASE {chineseName:'二尖瓣关闭不全'}), (r:DISEASE {chineseName:'心房颤动'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p294"}]->(r);
+MATCH (u:DISEASE {chineseName:'二尖瓣关闭不全'}), (r:DISEASE {chineseName:'栓塞'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p294"}]->(r);
+MATCH (u:DISEASE {chineseName:'二尖瓣关闭不全'}), (r:DISEASE {chineseName:'感染性心内膜炎'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p294"}]->(r);
+
+MATCH (u:DISEASE {chineseName:'主动脉瓣狭窄'}), (r:DISEASE {chineseName:'肺水肿'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p296"}]->(r);
+MATCH (u:DISEASE {chineseName:'主动脉瓣狭窄'}), (r:DISEASE {chineseName:'心绞痛'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p296"}]->(r);
+MATCH (u:DISEASE {chineseName:'主动脉瓣狭窄'}), (r:DISEASE_CATEGORY {chineseName:'心律失常'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p297"}]->(r);
+MATCH (u:DISEASE {chineseName:'主动脉瓣狭窄'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p297"}]->(r);
+MATCH (u:DISEASE {chineseName:'主动脉瓣狭窄'}), (r:DISEASE {chineseName:'心房颤动'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p297"}]->(r);
+MATCH (u:DISEASE {chineseName:'主动脉瓣狭窄'}), (r:DISEASE {chineseName:'栓塞'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p297"}]->(r);
+MATCH (u:DISEASE {chineseName:'主动脉瓣狭窄'}), (r:DISEASE {chineseName:'感染性心内膜炎'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p297"}]->(r);
+MATCH (u:DISEASE {chineseName:'主动脉瓣狭窄'}), (r:DISEASE {chineseName:'主动脉瓣关闭不全'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p295"}]->(r);
+MATCH (u:RISK_FACTOR {chineseName:'年龄>70'}), (r:DISEASE {chineseName:'主动脉瓣狭窄'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p295"}]->(r);
+MATCH (u:DISEASE {chineseName:'高血压'}), (r:DISEASE {chineseName:'主动脉瓣狭窄'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p295"}]->(r);
+MATCH (u:DISEASE {chineseName:'糖尿病'}), (r:DISEASE {chineseName:'主动脉瓣狭窄'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p295"}]->(r);
+MATCH (u:RISK_FACTOR {chineseName:'高脂血症'}), (r:DISEASE {chineseName:'主动脉瓣狭窄'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p295"}]->(r);
+MATCH (u:DISEASE {chineseName:'感染性心内膜炎'}), (r:DISEASE {chineseName:'主动脉瓣关闭不全'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p298"}]->(r);
+MATCH (u:DISEASE {chineseName:'主动脉瓣关闭不全'}), (r:DISEASE {chineseName:'感染性心内膜炎'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p300"}]->(r);
+MATCH (u:DISEASE {chineseName:'主动脉瓣关闭不全'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p300"}]->(r);
+MATCH (u:DISEASE {chineseName:'主动脉瓣关闭不全'}), (r:DISEASE {chineseName:'室性期前收缩'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p300"}]->(r);
+MATCH (u:DISEASE {chineseName:'主动脉瓣关闭不全'}), (r:DISEASE {chineseName:'室性心动过速'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p300"}]->(r);
+//描述完毕
+
+
+// 感染性心内膜炎
+MATCH (u:DISEASE {chineseName:'感染性心内膜炎'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p310, 164"}]->(r);
+MATCH (u:DISEASE {chineseName:'感染性心内膜炎'}), (r:DISEASE {chineseName:'心肌梗死'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p310"}]->(r);
+MATCH (u:DISEASE {chineseName:'感染性心内膜炎'}), (r:DISEASE {chineseName:'三尖瓣关闭不全'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p309"}]->(r);
+MATCH (u:DISEASE {chineseName:'感染性心内膜炎'}), (r:DISEASE {chineseName:'栓塞'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p310"}]->(r);
+MATCH (u:DISEASE {chineseName:'感染性心内膜炎'}), (r:DISEASE {chineseName:'心肌炎'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p310"}]->(r);
+MATCH (u:DISEASE {chineseName:'感染性心内膜炎'}), (r:DISEASE {chineseName:'肾脏疾病'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p310,314"}]->(r);
+//
+
+// 主动脉夹层
+MATCH (u:DISEASE {chineseName:'主动脉夹层'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p324"}]->(r);
+MATCH (u:DISEASE {chineseName:'主动脉夹层'}), (r:DISEASE {chineseName:'主动脉瓣关闭不全'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p324"}]->(r);
+MATCH (u:DISEASE {chineseName:'主动脉夹层'}), (r:DISEASE {chineseName:'心肌梗死'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p324"}]->(r);
+MATCH (u:DISEASE {chineseName:'高血压'}), (r:DISEASE {chineseName:'周围动脉病'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p326"}]->(r);
+MATCH (u:DISEASE {chineseName:'糖尿病'}), (r:DISEASE {chineseName:'周围动脉病'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p326"}]->(r);
+
+
+
+// 糖尿病相关
+MATCH (u:DISEASE {chineseName:'糖尿病'}), (r:RISK_FACTOR {chineseName:'高脂血症'}) CREATE (r)-[:CAUSE {reference: "病理学 人卫第9版 p154"}]->(u);
+
+
+// 删除节点及关系
+// P163有更详细的描述，取消泛化描述
+// MATCH (u:DISEASE_CATEGORY {chineseName:'心肌病'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p261"}]->(r); 
+// 心脏压塞在数据中出现过少
+// MATCH (u:DISEASE {chineseName:'主动脉窦瘤'}), (r:DISEASE {chineseName:'心脏压塞'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p278"}]->(r);
+// CREATE (:DISEASE {chineseName: "心脏压塞",englishName:"cardiac tamponade", comments: "和心包积液是不同程度的同一种疾病"});
+// MATCH (u:DISEASE_CATEGORY {chineseName:'心包疾病'}), (r:DISEASE {chineseName:'心脏压塞'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p304"}]->(r);
+// MATCH (u:DISEASE_CATEGORY {chineseName:'心包疾病'}), (r:DISEASE {chineseName:'心脏压塞'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p304"}]->(u);
+// MATCH (u:DISEASE {chineseName:'心脏压塞'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p164", comments: "前负荷过重"}]->(r);
+// MATCH (u:DISEASE {chineseName:'心包积液'}), (r:DISEASE {chineseName:'心脏压塞'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p304"}]->(r);
+// MATCH (u:DISEASE {chineseName:'心包炎'}), (r:DISEASE {chineseName:'心脏压塞'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p302"}]->(r);
+// 数据中出现次数过少，或者数量刚刚够格但是是极为严重的疾病
+// CREATE (:DISEASE {chineseName: "房室交界区性期前收缩",englishName:"premature atrioventricular junctional beats", comments: "交界性期前收缩"});
+// CREATE (:DISEASE {chineseName: "房室交界区性心律",englishName:"av junctional rhythm"});
+// CREATE (:DISEASE {chineseName: "房室交界区性逸搏",englishName:"av junctional escape beats"});
+// CREATE (:DISEASE {chineseName: "房室结折返性心动过速",englishName:"atrioventricular nodal reentrant tachycardia", comments: "AVNRT"});
+// CREATE (:DISEASE {chineseName: "房室折返性心动过速",englishName:"atrioventricular reentrant tachycardia", comments: "AVRT"});
+// MATCH (u:DISEASE_CATEGORY {chineseName:'心律失常'}), (r:DISEASE {chineseName:'房室交界区性期前收缩'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p190"}]->(r);
+// MATCH (u:DISEASE_CATEGORY {chineseName:'心律失常'}), (r:DISEASE {chineseName:'房室交界区性期前收缩'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p190"}]->(u);
+// MATCH (u:DISEASE_CATEGORY {chineseName:'心律失常'}), (r:DISEASE {chineseName:'房室交界区性心律'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p191"}]->(r);
+// MATCH (u:DISEASE_CATEGORY {chineseName:'心律失常'}), (r:DISEASE {chineseName:'房室交界区性心律'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p191"}]->(u);
+// MATCH (u:DISEASE_CATEGORY {chineseName:'心律失常'}), (r:DISEASE {chineseName:'房室交界区性逸搏'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p191"}]->(r);
+// MATCH (u:DISEASE_CATEGORY {chineseName:'心律失常'}), (r:DISEASE {chineseName:'房室交界区性逸搏'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p191"}]->(u);
+// MATCH (u:DISEASE_CATEGORY {chineseName:'室上性心动过速'}), (r:DISEASE {chineseName:'房室结折返性心动过速'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p192"}]->(r);
+// MATCH (u:DISEASE_CATEGORY {chineseName:'室上性心动过速'}), (r:DISEASE {chineseName:'房室结折返性心动过速'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p192"}]->(u);
+// MATCH (u:DISEASE_CATEGORY {chineseName:'室上性心动过速'}), (r:DISEASE {chineseName:'房室折返性心动过速'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p192"}]->(r);
+// MATCH (u:DISEASE_CATEGORY {chineseName:'室上性心动过速'}), (r:DISEASE {chineseName:'房室折返性心动过速'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p192"}]->(u);
+// MATCH (u:DISEASE_CATEGORY {chineseName:'冠状动脉粥样硬化性心脏病'}), (r:DISEASE {chineseName:'心室扑动'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p200"}]->(r);
+// MATCH (u:DISEASE_CATEGORY {chineseName:'冠状动脉粥样硬化性心脏病'}), (r:DISEASE {chineseName:'心室颤动'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p200"}]->(r);
+// CREATE (:DISEASE {chineseName: "心室扑动",englishName:"ventricular flutter", comments: "简称室扑"});
+// CREATE (:DISEASE {chineseName: "心室颤动",englishName:"ventricular fibrillation", comments: "简称室颤"});
+// MATCH (u:DISEASE_CATEGORY {chineseName:'心律失常'}), (r:DISEASE {chineseName:'心室扑动'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p200"}]->(r);
+// MATCH (u:DISEASE_CATEGORY {chineseName:'心律失常'}), (r:DISEASE {chineseName:'心室扑动'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p200"}]->(u);
+// MATCH (u:DISEASE_CATEGORY {chineseName:'心律失常'}), (r:DISEASE {chineseName:'心室颤动'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p200"}]->(r);
+// MATCH (u:DISEASE_CATEGORY {chineseName:'心律失常'}), (r:DISEASE {chineseName:'心室颤动'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p200"}]->(u);
+// MATCH (u:DISEASE {chineseName:'预激综合征'}), (r:DISEASE {chineseName:'心房颤动'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p194"}]->(r);
+// MATCH (u:DISEASE {chineseName:'预激综合征'}), (r:DISEASE {chineseName:'心室颤动'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p194"}]->(r);
+// MATCH (u:DISEASE {chineseName:'室性心动过速'}), (r:DISEASE {chineseName:'心室颤动'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p200"}]->(r);
+// MATCH (u:DISEASE {chineseName:'主动脉瓣关闭不全'}), (r:DISEASE {chineseName:'心室扑动'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p300"}]->(r);
+// MATCH (u:DISEASE {chineseName:'主动脉瓣关闭不全'}), (r:DISEASE {chineseName:'心室颤动'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p300"}]->(r);
+// CREATE (:DISEASE {chineseName: "心脏破裂",englishName:"cardiac aneurysm", comments: "心肌梗死（STEMI）并发症"});
+// MATCH (u:DISEASE {chineseName:'心肌梗死'}), (r:DISEASE {chineseName:'心脏破裂'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p240"}]->(r);
+// MATCH (u:DISEASE {chineseName:'心肌梗死'}), (r:DISEASE {chineseName:'心脏破裂'}) CREATE (u)-[:CAUSE {reference: "病理学 人卫第9版 159"}]->(r);
+// 缺乏相关数据
+// CREATE (:RISK_FACTOR {chineseName: "吸烟", englishName:"smoke", comments: "动脉粥样硬化风险节点"});
+// MATCH (u:RISK_FACTOR {chineseName:'吸烟'}), (r:DISEASE {chineseName:'主动脉瓣狭窄'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p295"}]->(r);
+// MATCH (u:RISK_FACTOR {chineseName:'吸烟'}), (r:DISEASE_CATEGORY {chineseName:'动脉粥样硬化'}) CREATE (u)-[:CAUSE {reference: "病理学 人卫第9版 p154"}]->(r);
+// MATCH (u:RISK_FACTOR {chineseName:'吸烟'}), (r:DISEASE {chineseName:'心肌梗死'}) CREATE (u)-[:CAUSE {reference: "病理学 人卫第9版 p154"}]->(r);
+// MATCH (u:RISK_FACTOR {chineseName:'吸烟'}), (r:DISEASE {chineseName:'高血压'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p248"}]->(r);
+// 数量太少
+// CREATE (:DISEASE {chineseName: "艾森门格综合征",englishName:"eisenmenger syndrome"});
+// MATCH (u:DISEASE {chineseName:'房间隔缺损'}), (r:DISEASE {chineseName:'艾森门格综合征'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p272"}]->(r);
+// MATCH (u:DISEASE_CATEGORY {chineseName:'先天性心血管病'}), (r:DISEASE {chineseName:'艾森门格综合征'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p280"}]->(r);
+// MATCH (u:DISEASE_CATEGORY {chineseName:'先天性心血管病'}), (r:DISEASE {chineseName:'艾森门格综合征'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p280"}]->(u);
+// CREATE (:DISEASE {chineseName: "三尖瓣下移畸形",englishName:"ebstein anomaly"});
+// MATCH (u:DISEASE_CATEGORY {chineseName:'先天性心血管病'}), (r:DISEASE {chineseName:'三尖瓣下移畸形'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p276"}]->(r);
+// MATCH (u:DISEASE_CATEGORY {chineseName:'先天性心血管病'}), (r:DISEASE {chineseName:'三尖瓣下移畸形'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p276"}]->(u);
+// MATCH (u:DISEASE {chineseName:'三尖瓣下移畸形'}), (r:DISEASE {chineseName:'三尖瓣关闭不全'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p276"}]->(r);
+// CREATE (:DISEASE {chineseName: "先天性主动脉缩窄",englishName:"congenital coarctation of the aorta"});
+// MATCH (u:DISEASE_CATEGORY {chineseName:'先天性心血管病'}), (r:DISEASE {chineseName:'先天性主动脉缩窄'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p277"}]->(r);
+// MATCH (u:DISEASE_CATEGORY {chineseName:'先天性心血管病'}), (r:DISEASE {chineseName:'先天性主动脉缩窄'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p277"}]->(u);
+// MATCH (u:DISEASE {chineseName:'先天性主动脉缩窄'}), (r:DISEASE {chineseName:'高血压'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p259"}]->(r);
+// CREATE (:DISEASE {chineseName: "冠状动脉痿",englishName:"coronary artery fistulae", comments: "CAF"});
+// MATCH (u:DISEASE {chineseName:'冠状动脉痿'}), (r:DISEASE {chineseName:'心力衰竭'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p278"}]->(r);
+// MATCH (u:DISEASE_CATEGORY {chineseName:'先天性心血管病'}), (r:DISEASE {chineseName:'冠状动脉痿'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p278"}]->(r);
+// MATCH (u:DISEASE_CATEGORY {chineseName:'先天性心血管病'}), (r:DISEASE {chineseName:'冠状动脉痿'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p278"}]->(u);
+// CREATE (:DISEASE {chineseName: "法洛四联症",englishName:"congenital tetralogy of fallot"});
+// MATCH (u:DISEASE_CATEGORY {chineseName:'先天性心血管病'}), (r:DISEASE {chineseName:'法洛四联症'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p279"}]->(r);
+// MATCH (u:DISEASE_CATEGORY {chineseName:'先天性心血管病'}), (r:DISEASE {chineseName:'法洛四联症'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p279"}]->(u);
+// MATCH (u:DISEASE {chineseName:'法洛四联症'}), (r:DISEASE {chineseName:'脑卒中'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p280"}]->(r);
+// MATCH (u:DISEASE {chineseName:'法洛四联症'}), (r:DISEASE {chineseName:'感染性心内膜炎'}) CREATE (u)-[:CAUSE {reference: "内科学 人卫第9版 p280"}]->(r);
+// CREATE (:RISK_FACTOR {chineseName: "低密度脂蛋白升高",englishName:"elevated low density lipoprotein", comments: "动脉粥样硬化风险节点"});
+// CREATE (:RISK_FACTOR {chineseName: "极低密度脂蛋白升高",englishName:"elevated very low density cholesterol", comments: "动脉粥样硬化风险节点"});
+// CREATE (:RISK_FACTOR {chineseName: "高密度脂蛋白降低",englishName:"lowed high density lipoprotein", comments: "动脉粥样硬化风险节点"});
+// 意义不大，高脂血症可以用胆固醇升高等生理指标已经包含这一疾病
+// MATCH (u:DISEASE {chineseName:'高脂血症'}), (r:RISK_FACTOR {chineseName:'总胆固醇升高'}) CREATE (r)-[:CAUSE {reference: "病理学 人卫第9版 p154"}]->(u);
+// MATCH (u:DISEASE {chineseName:'高脂血症'}), (r:RISK_FACTOR {chineseName:'总胆固醇升高'}) CREATE (u)-[:CAUSE {reference: "病理学 人卫第9版 p154"}]->(r);
+// MATCH (u:DISEASE {chineseName:'高脂血症'}), (r:RISK_FACTOR {chineseName:'甘油三酯升高'}) CREATE (r)-[:CAUSE {reference: "病理学 人卫第9版 p154"}]->(u);
+// MATCH (u:DISEASE {chineseName:'高脂血症'}), (r:RISK_FACTOR {chineseName:'甘油三酯升高'}) CREATE (u)-[:CAUSE {reference: "病理学 人卫第9版 p154"}]->(r);
+// MATCH (u:DISEASE {chineseName:'高胆固醇血症'}), (r:RISK_FACTOR {chineseName:'低密度脂蛋白胆固醇升高'}) CREATE (u)-[:CAUSE {reference: "病理学 人卫第9版 p154"}]->(r);
+// MATCH (u:DISEASE {chineseName:'肾脏疾病'}), (r:DISEASE {chineseName:'高胆固醇血症'}) CREATE (u)-[:CAUSE {reference: "病理学 人卫第9版 p154"}]->(r);
+// MATCH (u:DISEASE {chineseName:'甲状腺功能减退'}), (r:DISEASE {chineseName:'高胆固醇血症'}) CREATE (u)-[:CAUSE {reference: "病理学 人卫第9版 p154"}]->(r);
+// MATCH (u:DISEASE {chineseName:'代谢综合征'}), (r:RISK_FACTOR {chineseName:'低密度脂蛋白胆固醇升高'}) CREATE (r)-[:CAUSE {reference: "病理学 人卫第9版 p154"}]->(u);
+// MATCH (u:DISEASE {chineseName:'代谢综合征'}), (r:RISK_FACTOR {chineseName:'低密度脂蛋白胆固醇升高'}) CREATE (u)-[:CAUSE {reference: "病理学 人卫第9版 p154"}]->(r);
+// MATCH (u:DISEASE {chineseName:'代谢综合征'}), (r:RISK_FACTOR {chineseName:'高密度脂蛋白胆固醇降低'}) CREATE (r)-[:CAUSE {reference: "病理学 人卫第9版 p154"}]->(u);
+// MATCH (u:DISEASE {chineseName:'代谢综合征'}), (r:RISK_FACTOR {chineseName:'高密度脂蛋白胆固醇降低'}) CREATE (u)-[:CAUSE {reference: "病理学 人卫第9版 p154"}]->(r);
+// 分类过细
+// CREATE (:DISEASE {chineseName: "颅脑动脉粥样硬化",englishName:"cerebral artery atherosclerosis"});
+// CREATE (:DISEASE {chineseName: "肾动脉粥样硬化",englishName:"renal artery atherosclerosis"});
+// CREATE (:DISEASE {chineseName: "肠系膜动脉粥样硬化",englishName:"mesenteric artery atherosclerosis"});
+// CREATE (:DISEASE {chineseName: "四肢动脉粥样硬化",englishName:"limb atherosclerosis"});
+// CREATE (:DISEASE {chineseName: "冠状动脉痉挛",englishName:"coronarospasm"});
+// CREATE (:DISEASE {chineseName: "心肌桥",englishName:"myocardial bridge"});
+// CREATE (:DISEASE {chineseName: "X综合征",englishName:"x syndrome"});
+// MATCH (u:DISEASE_CATEGORY {chineseName:'动脉粥样硬化'}), (r:DISEASE {chineseName:'主动脉粥样硬化'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p216"}]->(r);
+// MATCH (u:DISEASE_CATEGORY {chineseName:'动脉粥样硬化'}), (r:DISEASE {chineseName:'主动脉粥样硬化'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p216"}]->(u);
+// MATCH (u:DISEASE_CATEGORY {chineseName:'动脉粥样硬化'}), (r:DISEASE {chineseName:'颅脑动脉粥样硬化'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p216"}]->(r);
+// MATCH (u:DISEASE_CATEGORY {chineseName:'动脉粥样硬化'}), (r:DISEASE {chineseName:'颅脑动脉粥样硬化'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p216"}]->(u);
+// MATCH (u:DISEASE_CATEGORY {chineseName:'动脉粥样硬化'}), (r:DISEASE {chineseName:'肾动脉粥样硬化'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p216"}]->(r);
+// MATCH (u:DISEASE_CATEGORY {chineseName:'动脉粥样硬化'}), (r:DISEASE {chineseName:'肾动脉粥样硬化'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p216"}]->(u);
+// MATCH (u:DISEASE_CATEGORY {chineseName:'动脉粥样硬化'}), (r:DISEASE {chineseName:'肠系膜动脉粥样硬化'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p216"}]->(r);
+// MATCH (u:DISEASE_CATEGORY {chineseName:'动脉粥样硬化'}), (r:DISEASE {chineseName:'肠系膜动脉粥样硬化'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p216"}]->(u);
+// MATCH (u:DISEASE_CATEGORY {chineseName:'动脉粥样硬化'}), (r:DISEASE {chineseName:'四肢动脉粥样硬化'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p216"}]->(r);
+// MATCH (u:DISEASE_CATEGORY {chineseName:'动脉粥样硬化'}), (r:DISEASE {chineseName:'四肢动脉粥样硬化'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p216"}]->(u);
+// MATCH (u:DISEASE_CATEGORY {chineseName:'冠状动脉粥样硬化性心脏病'}), (r:DISEASE {chineseName:'冠状动脉痉挛'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p245"}]->(r);
+// MATCH (u:DISEASE_CATEGORY {chineseName:'冠状动脉粥样硬化性心脏病'}), (r:DISEASE {chineseName:'冠状动脉痉挛'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p245"}]->(u);
+// MATCH (u:DISEASE_CATEGORY {chineseName:'冠状动脉粥样硬化性心脏病'}), (r:DISEASE {chineseName:'X综合征'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p246"}]->(r);
+// MATCH (u:DISEASE_CATEGORY {chineseName:'冠状动脉粥样硬化性心脏病'}), (r:DISEASE {chineseName:'X综合征'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p246"}]->(u);
+// MATCH (u:DISEASE_CATEGORY {chineseName:'冠状动脉粥样硬化性心脏病'}), (r:DISEASE {chineseName:'心肌桥'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p245"}]->(r);
+// MATCH (u:DISEASE_CATEGORY {chineseName:'冠状动脉粥样硬化性心脏病'}), (r:DISEASE {chineseName:'心肌桥'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p245"}]->(u);
+// CREATE (:DISEASE {chineseName: "高胆固醇血症",englishName:"hypercholesterolemia"});
+// CREATE (:DISEASE {chineseName: "代谢综合征",englishName:"metabolic syndrome"});
+// CREATE (:DISEASE {chineseName: "高脂血症",englishName:"hyperlipidemia"});
+// CREATE (:DISEASE {chineseName: "室内阻滞",englishName:"intraventricular block"});
+// CREATE (:DISEASE {chineseName: "窦性静止",englishName:"sinus arrest"});
+// MATCH (u:DISEASE_CATEGORY {chineseName:'心律失常'}), (r:DISEASE {chineseName:'窦性静止'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p183"}]->(r);
+// MATCH (u:DISEASE_CATEGORY {chineseName:'心律失常'}), (r:DISEASE {chineseName:'窦性静止'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p183"}]->(u);
+// MATCH (u:DISEASE_CATEGORY {chineseName:'心律失常'}), (r:DISEASE {chineseName:'室内阻滞'}) CREATE (u)-[:SUB_CONCEPT {reference: "内科学 人卫第9版 p203"}]->(r);
+// MATCH (u:DISEASE_CATEGORY {chineseName:'心律失常'}), (r:DISEASE {chineseName:'室内阻滞'}) CREATE (r)-[:GENERAL_CONCEPT {reference: "内科学 人卫第9版 p203"}]->(u);

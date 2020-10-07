@@ -1,0 +1,32 @@
+﻿血压Low_feature,skip
+血压high_feature,skip
+年龄_feature,skip
+White Blood Cells_Blood_feature,log
+weight_feature,arcsin
+Urea Nitrogen_Blood_feature,log
+Specific Gravity_Urine_feature,log
+Sodium_Blood_feature,skip
+Red Blood Cells_Blood_feature,skip
+RDW_Blood_feature,skip
+PTT_Blood_feature,sqrt
+PT_Blood_feature,skip
+Potassium_Blood_feature,log
+Platelet Count_Blood_feature,log
+Phosphate_Blood_feature,sqrt
+pH_Urine_feature,skip
+Neutrophils_Blood_feature,arcsin
+Monocytes_Blood_feature,sqrt
+MCV_Blood_feature,skip
+MCHC_Blood_feature,skip
+MCH_Blood_feature,skip
+Magnesium_Blood_feature,arcsin
+Lymphocytes_Blood_feature,sqrt
+INR(PT)_Blood_feature,log
+Hematocrit_Blood_feature,skip
+Eosinophils_Blood_feature,log
+Creatinine_Blood_feature,log
+Chloride_Blood_feature,skip
+"Calcium, Total_Blood_feature",skip
+Bicarbonate_Blood_feature,skip
+Basophils_Blood_feature,skip
+Anion Gap_Blood_feature,sqrt

@@ -1,0 +1,22 @@
+﻿lab_label,lab_chinese,lab_code,count,unit
+Creatinine,肌酐,50912,"800,000次",mg/dL
+Triglycerides,甘油三酯,51000,25000次,mg/dL
+Protein,尿蛋白,51492,"100,000次",mg/dL
+"Total Protein, Urine",尿蛋白,51102,"9,000次",mg/dL
+RBC,尿红细胞检查(镜检）,51493,"80,000次",#/hpf
+"Protein, Total",总蛋白,50976,"10,000次",g/dL
+Alanine Aminotransferase (ALT),丙氨酸氨基转移酶,50861,"210,000次",IU/L
+Asparate Aminotransferase (AST),天冬氨酸氨基转移酶,50878,"210,000次",IU/L
+Sodium,钠,50983,"880,000次",mEq/L
+Potassium,钾,50971,"840,000次",mEq/L
+Glucose,葡萄糖,50931,"740,000次",mg/dL
+Gamma Glutamyltransferase,γ谷氨酰基转移酶,50927,"2,500次",IU/L
+"Bilirubin, Total",总胆红素,50885,"230,000次",mg/dL
+Hemoglobin,血红蛋白测定,51222,"750,000次",g/dL
+"Cholesterol, HDL",高密度脂蛋白胆固醇,50904,"18,000次",mg/dL
+"Cholesterol, LDL, Calculated",低密度脂蛋白胆固醇,50905,"16,000次",mg/dL
+"Cholesterol, LDL, Measured",低密度脂蛋白胆固醇,50906,"2,000次",mg/dL
+Troponin T,肌钙蛋白T,51003,"87,000次",ng/mL
+"Calcium, Total",钙,50893,"590,000次",mg/dL
+NTproBNP,脑利钠肽前体,50963,"7,000次",pg/mL
+Urea Nitrogen,尿素氮,51006,"790,000次",mg/dL

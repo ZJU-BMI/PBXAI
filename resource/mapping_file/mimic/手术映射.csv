@@ -1,0 +1,107 @@
+﻿procedure_name,code,long title
+PCI,66,Percutaneous transluminal coronary angioplasty [PTCA]
+PCI,3606,Insertion of non-drug-eluting coronary artery stent(s)
+PCI,3607,Insertion of drug-eluting coronary artery stent(s)
+PCI,3604,Intracoronary artery thrombolytic infusion
+PCI,3609,Other removal of coronary artery obstruction
+CABG,3611,(Aorto)coronary bypass of one coronary artery
+CABG,3612,(Aorto)coronary bypass of two coronary arteries
+CABG,3613,(Aorto)coronary bypass of three coronary arteries
+CABG,3614,(Aorto)coronary bypass of four or more coronary arteries
+CABG,3615,Single internal mammary-coronary artery bypass
+CABG,3616,Double internal mammary-coronary artery bypass
+CABG,3617,Abdominal-coronary artery bypass
+CABG,3619,Other bypass anastomosis for heart revascularization
+造影,8840,"Arteriography using contrast material, unspecified site"
+造影,8841,Arteriography of cerebral arteries
+造影,8842,Aortography
+造影,8843,Arteriography of pulmonary arteries
+造影,8844,Arteriography of other intrathoracic vessels
+造影,8845,Arteriography of renal arteries
+造影,8846,Arteriography of placenta
+造影,8847,Arteriography of other intra-abdominal arteries
+造影,8848,Arteriography of femoral and other lower extremity arteries
+造影,8849,Arteriography of other specified sites
+造影,8850,"Angiocardiography, not otherwise specified"
+造影,8851,Angiocardiography of venae cavae
+造影,8852,Angiocardiography of right heart structures
+造影,8853,Angiocardiography of left heart structures
+造影,8854,Combined right and left heart angiocardiography
+造影,8855,Coronary arteriography using a single catheter
+造影,8856,Coronary arteriography using two catheters
+造影,8857,Other and unspecified coronary arteriography
+造影,8858,Negative-contrast cardiac roentgenography
+造影,8859,Intra-operative coronary fluorescence vascular angiography
+造影,8860,"Phlebography using contrast material, unspecified site"
+造影,8861,Phlebography of veins of head and neck using contrast material
+造影,8862,Phlebography of pulmonary veins using contrast material
+造影,8863,Phlebography of other intrathoracic veins using contrast material
+造影,8864,Phlebography of the portal venous system using contrast material
+造影,8865,Phlebography of other Intra-Abdominal veins using contrast material
+造影,8866,Phlebography of femoral and other lower extremity veins using contrast material
+造影,8867,Phlebography of other specified sites using contrast material
+PCI,40,Procedure on single vessel
+PCI,41,Procedure on two vessels
+PCI,42,Procedure on three vessels
+PCI,43,Procedure on four or more vessels
+PCI,44,Procedure on vessel bifurcation
+PCI,45,Insertion of one vascular stent
+PCI,46,Insertion of two vascular stents
+PCI,47,Insertion of three vascular stents
+PCI,48,Insertion of four or more vascular stents
+起搏器,3780,"Insertion of permanent pacemaker, initial or replacement, type of device not specified"
+起搏器,3781,"Initial insertion of single-chamber device, not specified as rate responsive"
+起搏器,3782,"Initial insertion of single-chamber device, rate responsive"
+起搏器,3783,Initial insertion of dual-chamber device
+起搏器,3785,"Replacement of any type pacemaker device with single-chamber device, not specified as rate responsive"
+起搏器,3786,"Replacement of any type of pacemaker device with single-chamber device, rate responsive"
+起搏器,3787,Replacement of any type pacemaker device with dual-chamber device
+起搏器,3789,Revision or removal of pacemaker device
+起搏器,50,"Implantation of cardiac resynchronization pacemaker without mention of defibrillation, total system [CRT-P]"
+起搏器,53,Implantation or replacement of cardiac resynchronization pacemaker pulse generator only [CRT-P]
+心脏再同步化治疗,51,"Implantation of cardiac resynchronization defibrillator, total system [CRT-D]"
+心脏再同步化治疗,54,Implantation or replacement of cardiac resynchronization defibrillator pulse generator only [CRT-D]
+除颤器,3794,"Implantation or replacement of automatic cardioverter/defibrillator, total system [AICD]"
+除颤器,3795,Implantation of automatic cardioverter/defibrillator lead(s) only
+除颤器,3796,Implantation of automatic cardioverter/defibrillator pulse generator only
+除颤器,3797,Replacement of automatic cardioverter/defibrillator lead(s) only
+除颤器,3798,Replacement of automatic cardioverter/defibrillator pulse generator only
+瓣膜手术,3524,Open and other replacement of mitral valve
+瓣膜手术,3525,Open and other replacement of pulmonary valve with tissue graft
+瓣膜手术,3526,Open and other replacement of pulmonary valve
+瓣膜手术,3527,Open and other replacement of tricuspid valve with tissue graft
+瓣膜手术,3528,Open and other replacement of tricuspid valve
+瓣膜手术,3539,Operations on other structures adjacent to valves of heart
+瓣膜手术,3599,Other operations on valves of heart
+瓣膜手术,3500,"Closed heart valvotomy, unspecified valve"
+瓣膜手术,3501,"Closed heart valvotomy, aortic valve"
+瓣膜手术,3502,"Closed heart valvotomy, mitral valve"
+瓣膜手术,3503,"Closed heart valvotomy, pulmonary valve"
+瓣膜手术,3504,"Closed heart valvotomy, tricuspid valve"
+瓣膜手术,3505,Endovascular replacement of aortic valve
+瓣膜手术,3506,Transapical replacement of aortic valve
+瓣膜手术,3507,Endovascular replacement of pulmonary valve
+瓣膜手术,3508,Transapical replacement of pulmonary valve
+瓣膜手术,3509,Endovascular replacement of unspecified heart valve
+瓣膜手术,3510,"Open heart valvuloplasty without replacement, unspecified valve"
+瓣膜手术,3511,Open heart valvuloplasty of aortic valve without replacement
+瓣膜手术,3512,Open heart valvuloplasty of mitral valve without replacement
+瓣膜手术,3513,Open heart valvuloplasty of pulmonary valve without replacement
+瓣膜手术,3514,Open heart valvuloplasty of tricuspid valve without replacement
+瓣膜手术,3520,Open and other replacement of unspecified heart valve
+瓣膜手术,3521,Open and other replacement of aortic valve with tissue graft
+瓣膜手术,3522,Open and other replacement of aortic valve
+瓣膜手术,3523,Open and other replacement of mitral valve with tissue graft
+瓣膜手术,6385,Removal of valve from vas deferens
+瓣膜手术,6395,Insertion of valve in vas deferens
+瓣膜手术,3596,Percutaneous balloon valvuloplasty
+瓣膜手术,3510,"Open heart valvuloplasty without replacement, unspecified valve"
+瓣膜手术,3511,Open heart valvuloplasty of aortic valve without replacement
+瓣膜手术,3512,Open heart valvuloplasty of mitral valve without replacement
+瓣膜手术,3513,Open heart valvuloplasty of pulmonary valve without replacement
+瓣膜手术,3514,Open heart valvuloplasty of tricuspid valve without replacement
+导管射频消融,9969,Cardiac rhythm conv NEC
+导管射频消融,3733,Exc/dest hrt lesion open
+导管射频消融,3734,Exc/des hrt les
+溶栓疗法,NoneA,
+电复律,NoneB,

@@ -1,0 +1,335 @@
+﻿_id,_labels,chineseName,comments,englishName,_start,_end,_type,comments,reference
+0,:RISK_FACTOR,年龄>40,动脉粥样硬化风险节点,age > 40,,,,,
+1,:RISK_FACTOR,年龄>70,心衰风险节点,age > 70,,,,,
+2,:RISK_FACTOR,性别,动脉粥样硬化风险节点,man,,,,,
+3,:RISK_FACTOR,肥胖,此处的肥胖指BMI>24,man,,,,,
+4,:RISK_FACTOR,高脂血症,动脉粥样硬化风险节点,hyperlipemia,,,,,
+5,:RISK_FACTOR,心脏手术,包括介入手术，CABG，导管检查及相应的麻醉过程,operation on heart,,,,,
+6,:RISK_FACTOR,正性肌力药物,,digitalis,,,,,
+7,:DISEASE,室上性心动过速,简称室上速，PVST,paroxysmal supraventricular tachycardia,,,,,
+8,:DISEASE,心力衰竭,,heart failure,,,,,
+9,:DISEASE,感染性心内膜炎,IE,infective endocarditis,,,,,
+10,:DISEASE,高血压,,hypertension,,,,,
+11,:DISEASE,心绞痛,技术上说心绞痛应当区分的更为细致，但是实际诊断中有点难以区分，因此稳定性和不稳定性进行合并处理,angina,,,,,
+12,:DISEASE,缺血性心肌病,"慢性心肌缺血综合征的一种, ICM",ischemic cardiomyopathy,,,,,
+13,:DISEASE,心肌梗死,技术上应该可以分得更细，但是由于实际数据中诊断往往只写心肌梗死，所以就没有继续往下分,myocardial infraction,,,,,
+14,:DISEASE,周围动脉病,,peripheral arterial diease,,,,,
+15,:DISEASE,窦性心动过速,,nodal tachycardia,,,,,
+16,:DISEASE,窦性心动过缓,,sinus bradycardia,,,,,
+17,:DISEASE,窦性心律不齐,,sinus arrhythmia,,,,,
+18,:DISEASE,窦性停搏,,sinus pause,,,,,
+19,:DISEASE,窦房传导阻滞,,sinoatrial block,,,,,
+20,:DISEASE,病态窦房结综合征,,sick sinus syndrome,,,,,
+21,:DISEASE,房性期前收缩,,premature atrial beats,,,,,
+22,:DISEASE,房性心动过速,简称房速,atrial tachcardia,,,,,
+23,:DISEASE,心房扑动,简称房扑,atrial flutter,,,,,
+24,:DISEASE,心房颤动,简称房颤,atrial fibrillation,,,,,
+25,:DISEASE,预激综合征,,preexcitation syndrome,,,,,
+26,:DISEASE,室性期前收缩,,premature ventricular beats,,,,,
+27,:DISEASE,室性心动过速,简称室速,ventricular tachycardia,,,,,
+28,:DISEASE,房室阻滞,,atrioventricular block,,,,,
+29,:DISEASE,扩张型心肌病,酒精性心肌病，围生期心肌病，心动过速性心肌病，致心律失常性右心室心肌病，心肌致密化不全，心脏气球样变均属于扩心病的一种特定类型,dilated cardiomyopathy,,,,,
+30,:DISEASE,肥厚型心肌病,,hypertrophic cardiomyopathy,,,,,
+31,:DISEASE,限制型心肌病,,restrictive cardiomyopathy,,,,,
+32,:DISEASE,心肌炎,主要指病毒性心肌炎,myocarditis,,,,,
+33,:DISEASE,二尖瓣狭窄,,mitral stenosis,,,,,
+34,:DISEASE,二尖瓣关闭不全,,mitral stenosis,,,,,
+35,:DISEASE,主动脉瓣狭窄,,aortic stenosis,,,,,
+36,:DISEASE,主动脉瓣关闭不全,,aortic incompetence,,,,,
+37,:DISEASE,三尖瓣关闭不全,,tricuspid valve incompetence,,,,,
+38,:DISEASE,肺动脉瓣关闭不全,,pulmonary valve incompetence,,,,,
+39,:DISEASE,主动脉夹层,又称主动脉夹层动脉瘤,aortic dissection,,,,,
+40,:DISEASE,肺动脉高压,,pulmonary arterial hypertension,,,,,
+41,:DISEASE,慢性肺源性心脏病,,chronic pulmonary heart disease,,,,,
+42,:DISEASE,心室壁瘤,心肌梗死（STEMI）并发症,cardiac aneurysm,,,,,
+43,:DISEASE,栓塞,心肌梗死（STEMI）并发症，可指代肺、脑、肾、脾或四肢动脉等栓塞或肺动脉栓塞，本知识图谱中不对栓塞进行更细节的区分,embolism,,,,,
+44,:DISEASE,三尖瓣狭窄,,tricuspid valve stenosis,,,,,
+45,:DISEASE,阻塞性黄疸,,obstructive jaundice,,,,,
+46,:DISEASE,脑卒中,,stroke,,,,,
+47,:DISEASE,贫血,,arrhythmia,,,,,
+48,:DISEASE,甲状腺功能亢进,,hyperthyroidism,,,,,
+49,:DISEASE,甲状旁腺功能亢进,,hyperparathyroidism,,,,,
+50,:DISEASE,心肌淀粉样变性,,cardiac amyloidosis,,,,,
+51,:DISEASE,肺水肿,不区分急性慢性,pneumonedema,,,,,
+52,:DISEASE,糖尿病,,diabetes,,,,,
+53,:DISEASE,甲状腺功能减退,,hypothyroidism,,,,,
+54,:DISEASE,肾脏疾病,所有肾脏疾病统一归入此病,nephropathy,,,,,
+55,:DISEASE,原发性醛固酮增多症,,primary aldosteronism,,,,,
+56,:DISEASE,睡眠呼吸暂停,,sleep apnea,,,,,
+57,:DISEASE,二尖瓣脱垂,,mitral valve prolapse,,,,,
+58,:DISEASE,腱索断裂,,rupture of chordae tendinca,,,,,
+59,:DISEASE,结缔组织病,参考ARA分类，包括类风湿关节炎，红斑狼疮，硬皮病，多肌炎/皮肌炎、抗磷脂综合征、大动脉炎、结节性多动脉炎、肉芽肿性多血管炎,connective tissue disease,,,,,
+60,:DISEASE_CATEGORY,心律失常,,arrhythmia,,,,,
+61,:DISEASE_CATEGORY,心肌病,,cardiomyopathy,,,,,
+62,:DISEASE_CATEGORY,冠状动脉粥样硬化性心脏病,,"coronary atherosclerotic heart disease, chd, icd",,,,,
+63,:DISEASE_CATEGORY,动脉粥样硬化,,atherosclerosis,,,,,
+64,:DISEASE_CATEGORY,心脏瓣膜病,,valvular heart disease,,,,,
+,,,,,40,41,CAUSE,,内科学 人卫第9版 p109
+,,,,,61,29,SUB_CONCEPT,,内科学 人卫第9版 p261
+,,,,,29,61,GENERAL_CONCEPT,,内科学 人卫第9版 p261
+,,,,,61,30,SUB_CONCEPT,,内科学 人卫第9版 p266
+,,,,,30,61,GENERAL_CONCEPT,,内科学 人卫第9版 p266
+,,,,,61,31,SUB_CONCEPT,,内科学 人卫第9版 p269
+,,,,,31,61,GENERAL_CONCEPT,,内科学 人卫第9版 p269
+,,,,,61,32,SUB_CONCEPT,,内科学 人卫第9版 p270
+,,,,,32,61,GENERAL_CONCEPT,,内科学 人卫第9版 p270
+,,,,,63,62,SUB_CONCEPT,,内科学 人卫第9版 p216
+,,,,,63,14,SUB_CONCEPT,,内科学 人卫第9版 p326
+,,,,,14,63,GENERAL_CONCEPT,,内科学 人卫第9版 p326
+,,,,,63,62,SUB_CONCEPT,,内科学 人卫第9版 p216
+,,,,,62,63,GENERAL_CONCEPT,,内科学 人卫第9版 p216
+,,,,,62,12,SUB_CONCEPT,,内科学 人卫第9版 p228
+,,,,,12,62,GENERAL_CONCEPT,,内科学 人卫第9版 p228
+,,,,,62,13,SUB_CONCEPT,,"内科学 人卫第9版 p229,234"
+,,,,,13,62,GENERAL_CONCEPT,,"内科学 人卫第9版 p229,234"
+,,,,,62,11,SUB_CONCEPT,,内科学 人卫第9版 p229
+,,,,,11,62,GENERAL_CONCEPT,,内科学 人卫第9版 p229
+,,,,,60,7,SUB_CONCEPT,,内科学 人卫第9版 p192
+,,,,,7,60,GENERAL_CONCEPT,,内科学 人卫第9版 p192
+,,,,,60,17,SUB_CONCEPT,,内科学 人卫第9版 p192
+,,,,,17,60,GENERAL_CONCEPT,,内科学 人卫第9版 p192
+,,,,,60,15,SUB_CONCEPT,,内科学 人卫第9版 p182
+,,,,,15,60,GENERAL_CONCEPT,,内科学 人卫第9版 p182
+,,,,,60,16,SUB_CONCEPT,,内科学 人卫第9版 p182
+,,,,,16,60,GENERAL_CONCEPT,,内科学 人卫第9版 p183
+,,,,,60,18,SUB_CONCEPT,,内科学 人卫第9版 p183
+,,,,,18,60,GENERAL_CONCEPT,,内科学 人卫第9版 p183
+,,,,,60,19,SUB_CONCEPT,,内科学 人卫第9版 p183
+,,,,,19,60,GENERAL_CONCEPT,,内科学 人卫第9版 p183
+,,,,,60,20,SUB_CONCEPT,,内科学 人卫第9版 p184
+,,,,,20,60,GENERAL_CONCEPT,,内科学 人卫第9版 p184
+,,,,,60,21,SUB_CONCEPT,,内科学 人卫第9版 p185
+,,,,,21,60,GENERAL_CONCEPT,,内科学 人卫第9版 p185
+,,,,,60,22,SUB_CONCEPT,,内科学 人卫第9版 p185
+,,,,,22,60,GENERAL_CONCEPT,,内科学 人卫第9版 p185
+,,,,,60,23,SUB_CONCEPT,,内科学 人卫第9版 p187
+,,,,,23,60,GENERAL_CONCEPT,,内科学 人卫第9版 p187
+,,,,,60,24,SUB_CONCEPT,,内科学 人卫第9版 p188
+,,,,,24,60,GENERAL_CONCEPT,,内科学 人卫第9版 p188
+,,,,,60,26,SUB_CONCEPT,,内科学 人卫第9版 p195
+,,,,,26,60,GENERAL_CONCEPT,,内科学 人卫第9版 p195
+,,,,,60,27,SUB_CONCEPT,,内科学 人卫第9版 p197
+,,,,,27,60,GENERAL_CONCEPT,,内科学 人卫第9版 p197
+,,,,,60,28,SUB_CONCEPT,,内科学 人卫第9版 p201
+,,,,,28,60,GENERAL_CONCEPT,,内科学 人卫第9版 p201
+,,,,,60,60,SUB_CONCEPT,,内科学 人卫第9版 p193
+,,,,,25,60,GENERAL_CONCEPT,,内科学 人卫第9版 p193
+,,,,,64,33,SUB_CONCEPT,,内科学 人卫第9版 p286
+,,,,,33,64,GENERAL_CONCEPT,,内科学 人卫第9版 p286
+,,,,,64,34,SUB_CONCEPT,,内科学 人卫第9版 p291
+,,,,,34,64,GENERAL_CONCEPT,,内科学 人卫第9版 p291
+,,,,,64,35,SUB_CONCEPT,,内科学 人卫第9版 p295
+,,,,,35,64,GENERAL_CONCEPT,,内科学 人卫第9版 p295
+,,,,,64,36,SUB_CONCEPT,,内科学 人卫第9版 p298
+,,,,,36,64,GENERAL_CONCEPT,,内科学 人卫第9版 p298
+,,,,,64,37,SUB_CONCEPT,,内科学 人卫第9版 p301
+,,,,,37,64,GENERAL_CONCEPT,,内科学 人卫第9版 p301
+,,,,,64,38,SUB_CONCEPT,,内科学 人卫第9版 p301
+,,,,,38,64,GENERAL_CONCEPT,,内科学 人卫第9版 p301
+,,,,,13,42,CAUSE,,内科学 人卫第9版 p240
+,,,,,13,43,CAUSE,,内科学 人卫第9版 p240
+,,,,,13,8,CAUSE,原发性心肌损害,内科学 人卫第9版 163
+,,,,,11,8,CAUSE,原发性心肌损害,内科学 人卫第9版 163
+,,,,,12,8,CAUSE,"原发性心肌损害, 此处的扩心病包含了右室心肌病、心肌致密化不全等子类",内科学 人卫第9版 163
+,,,,,29,8,CAUSE,原发性心肌损害,"内科学 人卫第9版 p163,261"
+,,,,,30,8,CAUSE,原发性心肌损害,"内科学 人卫第9版 p163,266"
+,,,,,32,8,CAUSE,原发性心肌损害,内科学 人卫第9版 p163
+,,,,,52,8,CAUSE,继发性心肌损害,内科学 人卫第9版 p164
+,,,,,53,8,CAUSE,继发性心肌损害，前负荷过重,内科学 人卫第9版 p164
+,,,,,48,8,CAUSE,继发性心肌损害，前负荷过重,"内科学 人卫第9版 p164,681"
+,,,,,50,8,CAUSE,继发性心肌损害,"内科学 人卫第9版 p164, 689"
+,,,,,59,8,CAUSE,继发性心肌损害,内科学 人卫第9版 p164
+,,,,,10,8,CAUSE,后负荷过重,"内科学 人卫第9版 p164,166"
+,,,,,35,8,CAUSE,后负荷过重,内科学 人卫第9版 p164
+,,,,,40,8,CAUSE,后负荷过重,内科学 人卫第9版 p164
+,,,,,34,8,CAUSE,前负荷过重,内科学 人卫第9版 p164
+,,,,,37,8,CAUSE,前负荷过重,内科学 人卫第9版 p164
+,,,,,31,8,CAUSE,前负荷不足,内科学 人卫第9版 p164
+,,,,,33,8,CAUSE,前负荷不足,内科学 人卫第9版 p164
+,,,,,36,8,CAUSE,,内科学 人卫第9版 p299
+,,,,,47,8,CAUSE,前负荷过重,内科学 人卫第9版 p164
+,,,,,13,8,CAUSE,前负荷过重,内科学 人卫第9版 p164
+,,,,,62,8,CAUSE,病因,内科学 人卫第9版 p166
+,,,,,41,8,CAUSE,,内科学 人卫第9版 p166
+,,,,,60,8,CAUSE,诱因,内科学 人卫第9版 p164
+,,,,,8,60,CAUSE,,内科学 人卫第9版 p164
+,,,,,62,60,CAUSE,,内科学 人卫第9版 p178
+,,,,,10,60,CAUSE,,内科学 人卫第9版 p178
+,,,,,61,60,CAUSE,,内科学 人卫第9版 p178
+,,,,,64,60,CAUSE,,内科学 人卫第9版 p178
+,,,,,32,60,CAUSE,,内科学 人卫第9版 p178
+,,,,,48,60,CAUSE,,内科学 人卫第9版 p178
+,,,,,47,60,CAUSE,,内科学 人卫第9版 p178
+,,,,,46,60,CAUSE,,内科学 人卫第9版 p178
+,,,,,48,15,CAUSE,,内科学 人卫第9版 p182
+,,,,,47,15,CAUSE,,内科学 人卫第9版 p182
+,,,,,11,15,CAUSE,,内科学 人卫第9版 p182
+,,,,,12,15,CAUSE,,内科学 人卫第9版 p182
+,,,,,8,15,CAUSE,,内科学 人卫第9版 p182
+,,,,,53,16,CAUSE,,内科学 人卫第9版 p183
+,,,,,45,16,CAUSE,,内科学 人卫第9版 p183
+,,,,,13,16,CAUSE,,内科学 人卫第9版 p183
+,,,,,20,16,CAUSE,,内科学 人卫第9版 p183
+,,,,,13,18,CAUSE,,内科学 人卫第9版 p183
+,,,,,46,18,CAUSE,,内科学 人卫第9版 p183
+,,,,,20,18,CAUSE,,内科学 人卫第9版 p183
+,,,,,53,20,CAUSE,,内科学 人卫第9版 p184
+,,,,,50,20,CAUSE,,内科学 人卫第9版 p184
+,,,,,46,20,CAUSE,,内科学 人卫第9版 p184
+,,,,,20,8,CAUSE,,内科学 人卫第9版 p184
+,,,,,20,11,CAUSE,,内科学 人卫第9版 p184
+,,,,,61,21,CAUSE,,内科学 人卫第9版 p185
+,,,,,62,21,CAUSE,,内科学 人卫第9版 p185
+,,,,,41,21,CAUSE,,内科学 人卫第9版 p185
+,,,,,62,22,CAUSE,,内科学 人卫第9版 p185
+,,,,,41,22,CAUSE,,内科学 人卫第9版 p185
+,,,,,22,24,CAUSE,,内科学 人卫第9版 p185
+,,,,,62,23,CAUSE,,内科学 人卫第9版 p187
+,,,,,10,23,CAUSE,,内科学 人卫第9版 p187
+,,,,,61,23,CAUSE,,内科学 人卫第9版 p187
+,,,,,8,23,CAUSE,,内科学 人卫第9版 p187
+,,,,,43,23,CAUSE,,内科学 人卫第9版 p187
+,,,,,48,23,CAUSE,,内科学 人卫第9版 p187
+,,,,,33,23,CAUSE,,内科学 人卫第9版 p187
+,,,,,44,23,CAUSE,,内科学 人卫第9版 p187
+,,,,,34,23,CAUSE,,内科学 人卫第9版 p187
+,,,,,37,23,CAUSE,,内科学 人卫第9版 p187
+,,,,,23,8,CAUSE,,内科学 人卫第9版 p187
+,,,,,23,11,CAUSE,,内科学 人卫第9版 p187
+,,,,,23,43,CAUSE,,内科学 人卫第9版 p187
+,,,,,23,24,CAUSE,,内科学 人卫第9版 p187
+,,,,,10,24,CAUSE,,内科学 人卫第9版 p188
+,,,,,41,24,CAUSE,,内科学 人卫第9版 p188
+,,,,,25,24,CAUSE,,内科学 人卫第9版 p188
+,,,,,48,24,CAUSE,,内科学 人卫第9版 p188
+,,,,,33,24,CAUSE,,内科学 人卫第9版 p188
+,,,,,61,24,CAUSE,,内科学 人卫第9版 p188
+,,,,,62,24,CAUSE,,内科学 人卫第9版 p188
+,,,,,24,46,CAUSE,,内科学 人卫第9版 p188
+,,,,,24,8,CAUSE,,"内科学 人卫第9版 p164,188"
+,,,,,24,43,CAUSE,,内科学 人卫第9版 p188
+,,,,,7,8,CAUSE,,内科学 人卫第9版 p192
+,,,,,25,7,CAUSE,,内科学 人卫第9版 p193
+,,,,,25,23,CAUSE,,内科学 人卫第9版 p194
+,,,,,62,7,CAUSE,,内科学 人卫第9版 p194
+,,,,,61,7,CAUSE,,内科学 人卫第9版 p194
+,,,,,10,26,CAUSE,,内科学 人卫第9版 p196
+,,,,,62,26,CAUSE,,内科学 人卫第9版 p196
+,,,,,61,26,CAUSE,,内科学 人卫第9版 p196
+,,,,,32,26,CAUSE,,内科学 人卫第9版 p196
+,,,,,26,8,CAUSE,,内科学 人卫第9版 p196
+,,,,,26,11,CAUSE,,内科学 人卫第9版 p196
+,,,,,62,27,CAUSE,,内科学 人卫第9版 p197
+,,,,,61,27,CAUSE,,内科学 人卫第9版 p197
+,,,,,8,27,CAUSE,,内科学 人卫第9版 p197
+,,,,,64,27,CAUSE,,内科学 人卫第9版 p197
+,,,,,13,28,CAUSE,,内科学 人卫第9版 p202
+,,,,,32,28,CAUSE,,内科学 人卫第9版 p202
+,,,,,9,28,CAUSE,,内科学 人卫第9版 p202
+,,,,,61,28,CAUSE,,内科学 人卫第9版 p202
+,,,,,35,28,CAUSE,,内科学 人卫第9版 p202
+,,,,,10,28,CAUSE,,内科学 人卫第9版 p202
+,,,,,50,28,CAUSE,,内科学 人卫第9版 p202
+,,,,,28,8,CAUSE,,内科学 人卫第9版 p202
+,,,,,28,46,CAUSE,,内科学 人卫第9版 p202
+,,,,,28,11,CAUSE,,内科学 人卫第9版 p202
+,,,,,52,63,CAUSE,,内科学 人卫第9版 p213
+,,,,,10,63,CAUSE,,内科学 人卫第9版 p213
+,,,,,11,13,CAUSE,,内科学 人卫第9版 p224
+,,,,,12,8,CAUSE,,内科学 人卫第9版 p228
+,,,,,12,60,CAUSE,,内科学 人卫第9版 p228
+,,,,,12,43,CAUSE,,内科学 人卫第9版 p228
+,,,,,12,51,CAUSE,,内科学 人卫第9版 p228
+,,,,,12,11,CAUSE,,内科学 人卫第9版 p228
+,,,,,11,13,CAUSE,,内科学 人卫第9版 p234
+,,,,,13,43,CAUSE,,内科学 人卫第9版 p234
+,,,,,13,11,CAUSE,,内科学 人卫第9版 p234
+,,,,,13,42,CAUSE,,内科学 人卫第9版 235
+,,,,,13,11,CAUSE,,内科学 人卫第9版 235
+,,,,,13,13,CAUSE,,内科学 人卫第9版 p234
+,,,,,13,60,CAUSE,,病理学 人卫第9版 p160
+,,,,,56,10,CAUSE,,内科学 人卫第9版 p248
+,,,,,10,46,CAUSE,,内科学 人卫第9版 p248
+,,,,,10,63,CAUSE,,内科学 人卫第9版 p248
+,,,,,10,8,CAUSE,,内科学 人卫第9版 p249
+,,,,,10,62,CAUSE,,内科学 人卫第9版 p249
+,,,,,10,54,CAUSE,,"内科学 人卫第9版 p250, 病理学 人卫第9版 p164"
+,,,,,10,39,CAUSE,,"内科学 人卫第9版 p250,323"
+,,,,,54,10,CAUSE,,内科学 人卫第9版 p259
+,,,,,55,10,CAUSE,,内科学 人卫第9版 p259
+,,,,,48,10,CAUSE,,内科学 人卫第9版 p259
+,,,,,53,10,CAUSE,,内科学 人卫第9版 p259
+,,,,,49,10,CAUSE,,内科学 人卫第9版 p259
+,,,,,36,10,CAUSE,,内科学 人卫第9版 p259
+,,,,,28,10,CAUSE,,内科学 人卫第9版 p259
+,,,,,61,8,CAUSE,,内科学 人卫第9版 p270
+,,,,,32,29,CAUSE,,内科学 人卫第9版 p270
+,,,,,59,29,CAUSE,,内科学 人卫第9版 p262
+,,,,,29,60,CAUSE,,内科学 人卫第9版 p261
+,,,,,29,43,CAUSE,,内科学 人卫第9版 p261
+,,,,,29,34,CAUSE,,病理学 人卫第9版 p173
+,,,,,29,37,CAUSE,,病理学 人卫第9版 p173
+,,,,,29,60,CAUSE,,病理学 人卫第9版 p174
+,,,,,30,60,CAUSE,,内科学 人卫第9版 p266
+,,,,,30,24,CAUSE,,内科学 人卫第9版 p266
+,,,,,31,8,CAUSE,,内科学 人卫第9版 p266
+,,,,,32,60,CAUSE,,内科学 人卫第9版 p266
+,,,,,59,33,CAUSE,,内科学 人卫第9版 p286
+,,,,,33,8,CAUSE,,"内科学 人卫第9版 p287, 164"
+,,,,,33,40,CAUSE,,病理学 人卫第9版 p172
+,,,,,33,24,CAUSE,,内科学 人卫第9版 p289
+,,,,,33,51,CAUSE,,内科学 人卫第9版 p289
+,,,,,33,43,CAUSE,,内科学 人卫第9版 p289
+,,,,,33,8,CAUSE,,内科学 人卫第9版 p289
+,,,,,33,9,CAUSE,,内科学 人卫第9版 p289
+,,,,,62,34,CAUSE,,内科学 人卫第9版 p291
+,,,,,9,34,CAUSE,,内科学 人卫第9版 p291
+,,,,,30,34,CAUSE,,内科学 人卫第9版 p291
+,,,,,57,34,CAUSE,,内科学 人卫第9版 p291
+,,,,,58,34,CAUSE,,内科学 人卫第9版 p291
+,,,,,34,8,CAUSE,,内科学 人卫第9版 p291
+,,,,,34,51,CAUSE,,内科学 人卫第9版 p292
+,,,,,34,24,CAUSE,,内科学 人卫第9版 p294
+,,,,,34,43,CAUSE,,内科学 人卫第9版 p294
+,,,,,34,9,CAUSE,,内科学 人卫第9版 p294
+,,,,,35,51,CAUSE,,内科学 人卫第9版 p296
+,,,,,35,11,CAUSE,,内科学 人卫第9版 p296
+,,,,,35,60,CAUSE,,内科学 人卫第9版 p297
+,,,,,35,8,CAUSE,,内科学 人卫第9版 p297
+,,,,,35,24,CAUSE,,内科学 人卫第9版 p297
+,,,,,35,43,CAUSE,,内科学 人卫第9版 p297
+,,,,,35,9,CAUSE,,内科学 人卫第9版 p297
+,,,,,35,36,CAUSE,,内科学 人卫第9版 p295
+,,,,,10,35,CAUSE,,内科学 人卫第9版 p295
+,,,,,52,35,CAUSE,,内科学 人卫第9版 p295
+,,,,,9,36,CAUSE,,内科学 人卫第9版 p298
+,,,,,36,9,CAUSE,,内科学 人卫第9版 p300
+,,,,,36,8,CAUSE,,内科学 人卫第9版 p300
+,,,,,36,26,CAUSE,,内科学 人卫第9版 p300
+,,,,,36,27,CAUSE,,内科学 人卫第9版 p300
+,,,,,9,8,CAUSE,,"内科学 人卫第9版 p310, 164"
+,,,,,9,13,CAUSE,,内科学 人卫第9版 p310
+,,,,,9,37,CAUSE,,内科学 人卫第9版 p309
+,,,,,9,43,CAUSE,,内科学 人卫第9版 p310
+,,,,,9,32,CAUSE,,内科学 人卫第9版 p310
+,,,,,9,54,CAUSE,,"内科学 人卫第9版 p310,314"
+,,,,,39,8,CAUSE,,内科学 人卫第9版 p324
+,,,,,39,36,CAUSE,,内科学 人卫第9版 p324
+,,,,,39,13,CAUSE,,内科学 人卫第9版 p324
+,,,,,10,14,CAUSE,,内科学 人卫第9版 p326
+,,,,,52,14,CAUSE,,内科学 人卫第9版 p326
+,,,,,4,52,CAUSE,,病理学 人卫第9版 p154
+,,,,,4,35,CAUSE,,内科学 人卫第9版 p295
+,,,,,3,10,CAUSE,,内科学 人卫第9版 p248
+,,,,,4,63,CAUSE,,内科学 人卫第9版 p213
+,,,,,0,63,CAUSE,,内科学 人卫第9版 p213
+,,,,,2,63,CAUSE,,内科学 人卫第9版 p213
+,,,,,3,63,CAUSE,,内科学 人卫第9版 p213
+,,,,,6,28,CAUSE,,内科学 人卫第9版 p202
+,,,,,1,24,CAUSE,此处的真实风险因子事实上是高龄，70岁仅仅是人工选择的截断点,内科学 人卫第9版 p188
+,,,,,6,22,CAUSE,,内科学 人卫第9版 p185
+,,,,,5,22,CAUSE,,内科学 人卫第9版 p185
+,,,,,6,20,CAUSE,,内科学 人卫第9版 p184
+,,,,,5,60,CAUSE,,内科学 人卫第9版 p178
+,,,,,1,8,CAUSE,风险因子,内科学 人卫第9版 p166
+,,,,,1,35,CAUSE,,内科学 人卫第9版 p295
