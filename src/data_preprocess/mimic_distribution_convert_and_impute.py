@@ -14,7 +14,7 @@ def main():
     strategy_path = os.path.abspath('../../resource/mapping_file/mimic/分布变换策略.csv')
     save_un_imputed_path = os.path.abspath('../../resource/preprocessed_data/mimic_un_imputed_data.csv')
     save_imputed_path = os.path.abspath('../../resource/preprocessed_data/mimic_imputed_data.csv')
-    feature_order_path = os.path.abspath('../../resource/mapping_file/mimic/feature_order.csv')
+    feature_order_path = os.path.abspath('../../resource/mapping_file/feature_order.csv')
 
     iter_num = 100
     placeholder_replace = -99999
