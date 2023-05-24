@@ -59,7 +59,7 @@ class DataLoader(object):
         np.random.shuffle(idx_permutation)
         for i in range(batch_num):
             idx_list = np.array(idx_permutation[i*self._batch_size: (i+1)*self._batch_size])
-            batch_data_list.append(np.array(self._data[idx_list], dtype=np.float))
+            batch_data_list.append(np.array(self._data[idx_list], dtype=float))
         return batch_data_list
 
 

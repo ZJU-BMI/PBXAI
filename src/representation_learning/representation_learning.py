@@ -25,7 +25,7 @@ class DataLoader(object):
             disease_category = np.load(os.path.join(file_folder_, 'disease_category_list_{}.npy'.format(i)))
             data_list.append(np.concatenate([feature, treatment, risk_factor, disease, disease_category], axis=1))
         self._data = np.concatenate([data_list[0], data_list[1], data_list[2], data_list[3], data_list[4]], axis=0)
-        self._data = np.array(self._data, dtype=np.float)
+        self._data = np.array(self._data, dtype=float)
 
         max_value = np.max(self._data, axis=0)[np.newaxis, :] + 0.0001
         min_value = np.min(self._data, axis=0)[np.newaxis, :] - 0.0001
@@ -41,7 +41,7 @@ class DataLoader(object):
         np.random.shuffle(idx_permutation)
         for i in range(batch_num):
             idx_list = np.array(idx_permutation[i*self._batch_size: (i+1)*self._batch_size])
-            batch_data_list.append(np.array(self._data[idx_list], dtype=np.float))
+            batch_data_list.append(np.array(self._data[idx_list], dtype=float))
         return batch_data_list
 
     def get_data(self):

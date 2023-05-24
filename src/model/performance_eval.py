@@ -114,8 +114,8 @@ def read_group(data_path, omit):
     group = dict()
     all_label = list()
     for i in range(5):
-        label = np.array(np.load(os.path.join(data_path, 'label_list_{}.npy'.format(i))), dtype=np.int)
-        disease = np.array(np.load(os.path.join(data_path, 'disease_list_{}.npy'.format(i))), dtype=np.int)
+        label = np.array(np.load(os.path.join(data_path, 'label_list_{}.npy'.format(i))), dtype=int)
+        disease = np.array(np.load(os.path.join(data_path, 'disease_list_{}.npy'.format(i))), dtype=int)
         label_list = list()
         for j in range(len(label)):
             single_line_1 = list()

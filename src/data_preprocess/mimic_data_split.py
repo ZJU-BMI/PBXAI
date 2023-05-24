@@ -173,7 +173,7 @@ def five_fold_split(save_folder, data_length, **args):
             if key == 'pat_visit_list':
                 data = np.array(new_data_dict[key][index])
             else:
-                data = np.array(new_data_dict[key][index], dtype=np.float)
+                data = np.array(new_data_dict[key][index], dtype=float)
             np.save(os.path.join(save_folder, '{}_{}.npy'.format(key, index)), data)
 
 

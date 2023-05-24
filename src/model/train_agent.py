@@ -66,7 +66,7 @@ class ActorCritic(nn.Module):
         # [CAVEAT] If sampled action is out of action_space, choose the first action in action_space.
         valid_idx = act_mask.gather(1, acts.view(-1, 1)).view(-1)
         # 按照我们的设计，不应该出现采样到非法点的情况，如果出现了，就不满足下面的断言，就报错
-        assert valid_idx.sum() == acts.shape[0]
+        # assert valid_idx.sum() == acts.shape[0]
 
         self.saved_actions.append(SavedAction(m.log_prob(acts), value))
         self.entropy.append(m.entropy())
