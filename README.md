@@ -12,7 +12,7 @@ If you are not able to access MIMIC-III, please complete a required training cou
 Please ensure your computer has enough storage space because MIMIC-III is a large dataset (45 GiB is required in this study)
 
 ### Environment
-Please install Python 3.7 environment, as well as Pytorch (Version 1.15.1), matplotlib (3.2.1), numpy (1.18.4), pandas (1.0.4), scikit-learn (0.23.1), and scipy (1.4.1) packages in advance.
+Please install Python 3.7 environment, as well as Pytorch, matplotlib, numpy, pandas, scikit-learn, and scipy packages in advance.
 
 ## Step 1 Uncompress Data
 Please clone the project, and then uncompress the entire MIMIC-III dataset into:  
