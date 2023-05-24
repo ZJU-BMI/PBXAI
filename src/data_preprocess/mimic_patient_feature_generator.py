@@ -36,9 +36,10 @@ def main():
     print('lab test dict loaded')
     diagnosis_dict = get_diagnosis(visit_dict, save_root, diagnosis_path, diagnosis_mapping_path, read_from_cache=False)
     print('diagnosis dict loaded')
-    vital_sign_dict = get_vital_sign(visit_dict, save_root, vital_sign_path, read_from_cache=True)
+    vital_sign_dict = get_vital_sign(visit_dict, save_root, vital_sign_path, read_from_cache=False)
     print('vital sign dict loaded')
     risk_factor_dict = get_risk_factor(visit_dict, vital_sign_dict, age_sex_dict, operation_dict, cardiac_ope_name_set)
+
     disease_category_dict = disease_category_fuse(visit_dict, diagnosis_dict)
 
     save_path = os.path.join(os.path.abspath('../../resource/preprocessed_data/'), 'mimic_unpreprocessed.csv')
@@ -264,7 +265,7 @@ def get_sex_age(visit_dict, save_root, patient_path, read_from_cache=True, file_
     return sex_age_dict
 
 
-def get_vital_sign(visit_dict, save_root, vital_sign_path, read_from_cache=True, file_name='vital_sign.csv',):
+def get_vital_sign(visit_dict, save_root, vital_sign_path, read_from_cache=True, file_name='vital_sign.csv'):
     if read_from_cache:
         vital_sign_dict = dict()
         with open(os.path.join(save_root, file_name), 'r', encoding='utf-8-sig', newline='') as file:
@@ -353,7 +354,8 @@ def get_vital_sign(visit_dict, save_root, vital_sign_path, read_from_cache=True,
                 bmi = weight * 10000 / height / height
             vital_sign_dict[patient_id][visit_id]['BMI'] = bmi, -1
             for feature in vital_sign_dict[patient_id][visit_id]:
-                vital_sign_dict[patient_id][visit_id][feature] = vital_sign_dict[patient_id][visit_id][feature][0]
+                vital_sign_dict[patient_id][visit_id][feature] = \
+                    float(vital_sign_dict[patient_id][visit_id][feature][0])
 
     data_to_write = [['patient_id', 'visit_id', 'feature', 'value']]
     with open(os.path.join(save_root, file_name), 'w', encoding='utf-8-sig', newline='') as file:
@@ -363,6 +365,7 @@ def get_vital_sign(visit_dict, save_root, vital_sign_path, read_from_cache=True,
                     value = vital_sign_dict[patient_id][visit_id][feature]
                     data_to_write.append([patient_id, visit_id, feature, value])
         csv.writer(file).writerows(data_to_write)
+    return vital_sign_dict
 
 
 def get_medicine(visit_dict, save_root, medicine_path, mapping_file, read_from_cache=True, file_name='medicine.csv',

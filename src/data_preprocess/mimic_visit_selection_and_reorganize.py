@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 def main():
     visit_delete_missing_rate = 0.3
     figure_save_folder = os.path.abspath('../../resource/preprocessed_data/mimic_feature_distribution')
-    feature_order_path = os.path.abspath('../../resource/mapping_file/feature_order.csv')
+    feature_order_path = os.path.abspath('../../resource/mapping_file/mimic/feature_order.csv')
     data_path = os.path.join(os.path.abspath('../../resource/preprocessed_data/'), 'mimic_after_variable_selection.csv')
 
     feature_dict_list = read_feature_list(feature_order_path)
