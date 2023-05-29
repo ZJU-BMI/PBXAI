@@ -5,7 +5,7 @@ Note, because the PLAGH dataset is a private dataset, we don't release the relat
 
 In the following subsection, we will introduce the detail of reproducing.
 
-We have tested the correctness of the project at Windows 10 and Ubuntu 18.04.
+We have tested the project at Windows 10 and Ubuntu 18.04.
 
 ## Prerequisite
 ### Data
