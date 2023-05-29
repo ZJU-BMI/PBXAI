@@ -10,17 +10,17 @@ def main():
     mapping_root = os.path.abspath('../../resource/mapping_file/mimic')
     save_root = os.path.abspath('../../resource/cache/mimic')
 
-    diagnosis_path = os.path.join(data_root, 'diagnoses_icd.csv')
-    admission_path = os.path.join(data_root, 'admissions.csv')
-    lab_test_path = os.path.join(data_root, 'labevents.csv')
-    medicine_path = os.path.join(data_root, 'prescriptions.csv')
-    vital_sign_path = os.path.join(data_root, 'chartevents.csv')
-    patient_path = os.path.join(data_root, 'patients.csv')
+    diagnosis_path = os.path.join(data_root, 'DIAGNOSES_ICD.csv')
+    admission_path = os.path.join(data_root, 'ADMISSIONS.csv')
+    lab_test_path = os.path.join(data_root, 'LABEVENTS.csv')
+    medicine_path = os.path.join(data_root, 'PRESCRIPTIONS.csv')
+    vital_sign_path = os.path.join(data_root, 'CHATEVENTS.csv')
+    patient_path = os.path.join(data_root, 'PATIENTS.csv')
     code_name_path = os.path.join(data_root, 'D_LABITEMS.csv')
-    operation_path = os.path.join(data_root, 'procedures_icd.csv')
-    diagnosis_mapping_path = os.path.join(mapping_root, 'diagnosis.csv')
-    medicine_mapping_path = os.path.join(mapping_root, '药物名称映射.csv')
-    operation_mapping_path = os.path.join(mapping_root, '手术映射.csv')
+    operation_path = os.path.join(data_root, 'PROCEDURES_ICD.csv')
+    diagnosis_mapping_path = os.path.join(mapping_root, 'DIAGNOSIS.csv')
+    medicine_mapping_path = os.path.join(mapping_root, 'MEDICINE_NAME_MAP.csv')
+    operation_mapping_path = os.path.join(mapping_root, 'OPERATION_MAP.csv')
 
     cardiac_ope_name_set = {'PCI', 'CABG', '瓣膜手术', '除颤器', '心脏再同步化治疗', '起搏器'}
 
