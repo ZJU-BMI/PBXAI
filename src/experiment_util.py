@@ -48,7 +48,7 @@ relation_embed = {
 }
 
 reward_dict = {}
-with open('../../resource/reward_set.csv', 'r', encoding='utf-8-sig') as file:
+with open('../resource/reward_set.csv', 'r', encoding='utf-8-sig') as file:
     csv_reader = csv.reader(file)
     for idx, line in enumerate(islice(csv_reader, 1, None)):
         reward_dict[idx] = {'reverse': float(line[2]), '0.5': float(line[3]), '0.75': float(line[4])}

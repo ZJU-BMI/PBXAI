@@ -51,7 +51,7 @@ Please run the following scripts successively.
     2.   src/representation_learning/representation_learning.py
 ```
 These two scripts are responsible to learn the representations of patients and medical entities, as we described in the subsection-III.C of our article.
-
+c
 Once the scripts are executed successfully, we can find files are created in the resource/representation folder
 
 ## Step 4 Run the model
