@@ -14,7 +14,7 @@ def main():
     admission_path = os.path.join(data_root, 'ADMISSIONS.csv')
     lab_test_path = os.path.join(data_root, 'LABEVENTS.csv')
     medicine_path = os.path.join(data_root, 'PRESCRIPTIONS.csv')
-    vital_sign_path = os.path.join(data_root, 'CHATEVENTS.csv')
+    vital_sign_path = os.path.join(data_root, 'CHARTEVENTS.csv')
     patient_path = os.path.join(data_root, 'PATIENTS.csv')
     code_name_path = os.path.join(data_root, 'D_LABITEMS.csv')
     operation_path = os.path.join(data_root, 'PROCEDURES_ICD.csv')
