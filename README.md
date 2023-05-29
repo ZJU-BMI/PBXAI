@@ -7,7 +7,7 @@ In the following subsection, we will introduce the detail of reproducing.
 
 ## Prerequisite
 ### Data
-We assume you are already able to access the [MIMIC-III (V1.4)](https://mimic.physionet.org/about/mimic/), which is a publicily available electronic health record (EHR) databse which contains over 40 thousand patients who stayed in critical care units of the Beth Israel Deaconess Medical Center between 2001 and 2012.  
+We assume you are already able to access the [MIMIC-III (V1.4)](https://mimic.physionet.org/about/mimic/), which is a publicily available electronic health record (EHR) database that contains over 40 thousand patients who stayed in critical care units of the Beth Israel Deaconess Medical Center between 2001 and 2012.  
 If you are not able to access MIMIC-III, please complete a required training course and then submit an application at [request link](https://mimic.physionet.org/gettingstarted/access/). Once the application is approved, you can download the MIMIC-III freely.
 Please ensure your computer has enough storage space because MIMIC-III is a large dataset (45 GiB is required in this study)
 
