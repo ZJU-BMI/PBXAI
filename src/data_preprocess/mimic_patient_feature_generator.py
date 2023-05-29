@@ -515,9 +515,10 @@ def get_lab_test(visit_dict, save_root, lab_test_path, code_name_path, read_from
         for visit_id in lab_test_dict[patient_id]:
             lab_new_dict[patient_id][visit_id] = dict()
             for feature in lab_test_dict[patient_id][visit_id]:
+                feature_name = code_name_map[feature]
                 value, record_time = lab_test_dict[patient_id][visit_id][feature]
-                lab_new_dict[patient_id][visit_id][feature] = value
-    return lab_test_dict
+                lab_new_dict[patient_id][visit_id][feature_name] = value, record_time
+    return lab_new_dict
 
 
 def get_admissions(admission_path, save_root, read_from_cache=True, file_name='admission.csv'):
