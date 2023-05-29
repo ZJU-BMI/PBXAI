@@ -1,6 +1,5 @@
 import numpy as np
 import os
-import pickle
 from sklearn.metrics import roc_auc_score, f1_score, average_precision_score, coverage_error, label_ranking_loss, \
     hamming_loss
 import sys
@@ -48,7 +47,7 @@ relation_embed = {
 }
 
 reward_dict = {}
-with open('../resource/reward_set.csv', 'r', encoding='utf-8-sig') as file:
+with open(os.path.abspath('../../resource/reward_set.csv'), 'r', encoding='utf-8-sig') as file:
     csv_reader = csv.reader(file)
     for idx, line in enumerate(islice(csv_reader, 1, None)):
         reward_dict[idx] = {'reverse': float(line[2]), '0.5': float(line[3]), '0.75': float(line[4])}
@@ -242,12 +241,6 @@ def index_divide(label, threshold=5):
             group_idx_map['group_2'].append(item[0])
 
     return group_idx_map
-
-
-def load_kg(path):
-    with open(path, 'rb') as f:
-        kg = pickle.load(f)
-    return kg
 
 
 def load_embed(path):

@@ -1,5 +1,13 @@
-from experiment_util import load_kg, load_embed, relation_embed, GENERAL_CONCEPT, PATIENT, SELF_LOOP, HAVE, DISEASE
+from experiment_util import load_embed, relation_embed, GENERAL_CONCEPT, PATIENT, SELF_LOOP, HAVE, DISEASE
 import numpy as np
+import pickle
+from knowledge_graph import KnowledgeGraph
+
+
+def load_kg(path):
+    with open(path, 'rb') as f:
+        kg = pickle.load(f)
+    return kg
 
 
 class KGState(object):

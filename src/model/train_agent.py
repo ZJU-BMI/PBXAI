@@ -4,7 +4,6 @@ src = os.path.abspath('../')
 sys.path.append(src)
 sys.path.append(os.path.join(src, 'model'))
 sys.path.append(os.path.join(src, 'data_preprocess'))
-sys.path.append(os.path.join(src, 'knowledge_graph'))
 
 import torch.nn as nn
 from torch.distributions import Categorical
@@ -15,7 +14,7 @@ from datetime import datetime
 import torch
 import argparse
 import numpy as np
-
+from knowledge_graph import KnowledgeGraph
 import experiment_util as util
 from model import kg_env, performance_eval
 import random
