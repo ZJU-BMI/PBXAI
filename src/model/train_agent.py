@@ -294,7 +294,7 @@ def main():
     for test_fold_idx in [0, 1, 2, 3, 4]:
         parser = argparse.ArgumentParser()
         parser.add_argument('--name', type=str, default='train_agent', help='directory name.')
-        parser.add_argument('--gpu', type=str, default='0', help='gpu device.')
+        parser.add_argument('--gpu', type=str, default='cpu', help='gpu device.')
         parser.add_argument('--test_fold_idx', type=int, default=test_fold_idx)
         parser.add_argument('--omit_duplicate', type=bool, default=False)
         parser.add_argument('--epochs', type=int, default=epoch)
@@ -321,9 +321,9 @@ def main():
         parser.add_argument('--topk', type=int, nargs='*', default=top_k, help='number of samples')
         args = parser.parse_args()
 
-        os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
-        args.device = torch.device('cuda:0') if torch.cuda.is_available() else 'cpu'
-
+        # os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
+        # args.device = torch.device('cuda:0') if torch.cuda.is_available() else 'cpu'
+        args.device = 'cpu'
         logger.info(args)
         train(args)
         performance_eval.test(args, 'test')
