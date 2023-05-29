@@ -5,6 +5,8 @@ Note, because the PLAGH dataset is a private dataset, we don't release the relat
 
 In the following subsection, we will introduce the detail of reproducing.
 
+We have tested the correctness of the project at Windows 10 and Ubuntu 18.04.
+
 ## Prerequisite
 ### Data
 We assume you are already able to access the [MIMIC-III (V1.4)](https://mimic.physionet.org/about/mimic/), which is a publicily available electronic health record (EHR) database that contains over 40 thousand patients who stayed in critical care units of the Beth Israel Deaconess Medical Center between 2001 and 2012.  
@@ -12,7 +14,7 @@ If you are not able to access MIMIC-III, please complete a required training cou
 Please ensure your computer has enough storage space because MIMIC-III is a large dataset (45 GiB is required in this study)
 
 ### Environment
-Please install Python 3.7 environment, as well as Pytorch, matplotlib, numpy, pandas, scikit-learn, and scipy packages in advance.
+Please install Python 3.9 environment, as well as pytorch, matplotlib, numpy, pandas, scikit-learn, and scipy packages in advance.
 
 ## Step 1 Uncompress Data
 Please clone the project, and then uncompress the entire MIMIC-III dataset into:  

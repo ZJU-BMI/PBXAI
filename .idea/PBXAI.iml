@@ -8,7 +8,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src/model" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/venv" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.9 (PBXAI)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Remote Python 3.9.16 (sftp://sunzhoujian@10.105.0.3:30136/home/sunzhoujian/miniconda3/envs/pbxai/bin/python3.9)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>

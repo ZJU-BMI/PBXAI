@@ -28,15 +28,15 @@ def main():
     print('visit dict loaded')
     age_sex_dict = get_sex_age(visit_dict, save_root, patient_path, read_from_cache=False)
     print('age sex dict loaded')
-    medicine_dict = get_medicine(visit_dict, save_root, medicine_path, medicine_mapping_path, read_from_cache=False)
+    medicine_dict = get_medicine(visit_dict, save_root, medicine_path, medicine_mapping_path, read_from_cache=True)
     print('medicine dict loaded')
     operation_dict = get_procedure(visit_dict, save_root, operation_path, operation_mapping_path, read_from_cache=False)
     print('operation dict loaded')
-    lab_test_dict = get_lab_test(visit_dict, save_root, lab_test_path, code_name_path, read_from_cache=False)
+    lab_test_dict = get_lab_test(visit_dict, save_root, lab_test_path, code_name_path, read_from_cache=True)
     print('lab test dict loaded')
     diagnosis_dict = get_diagnosis(visit_dict, save_root, diagnosis_path, diagnosis_mapping_path, read_from_cache=False)
     print('diagnosis dict loaded')
-    vital_sign_dict = get_vital_sign(visit_dict, save_root, vital_sign_path, read_from_cache=False)
+    vital_sign_dict = get_vital_sign(visit_dict, save_root, vital_sign_path, read_from_cache=True)
     print('vital sign dict loaded')
     risk_factor_dict = get_risk_factor(visit_dict, vital_sign_dict, age_sex_dict, operation_dict, cardiac_ope_name_set)
 
@@ -197,7 +197,7 @@ def get_procedure(visit_dict, save_root, procedure_path, mapping_file, read_from
             for code in mapping_dict:
                 procedure_dict[patient_id][visit_id][mapping_dict[code]] = 0
 
-    with open(procedure_path, 'r', newline='') as file:
+    with open(procedure_path, 'r', encoding='utf-8-sig', newline='') as file:
         csv_reader = csv.reader(file)
         for line in islice(csv_reader, 1, None):
             patient_id, visit_id, icd_9 = line[1], line[2], line[4]
@@ -234,7 +234,7 @@ def get_sex_age(visit_dict, save_root, patient_path, read_from_cache=True, file_
         for visit_id in visit_dict[patient_id]:
             sex_age_dict[patient_id][visit_id] = {'年龄': -1, '性别': -1}
 
-    with open(patient_path, 'r', newline='') as file:
+    with open(patient_path, 'r', newline='', encoding='utf-8-sig') as file:
         csv_reader = csv.reader(file)
         for line in islice(csv_reader, 1, None):
             patient_id, sex, birthday = line[1: 4]
@@ -290,7 +290,7 @@ def get_vital_sign(visit_dict, save_root, vital_sign_path, read_from_cache=True,
                 'weight': [-1, datetime.datetime(2500, 1, 1, 0, 0, 0, 0)],
             }
 
-    with open(vital_sign_path, 'r', newline='', buffering=-1) as file:
+    with open(vital_sign_path, 'r', newline='', buffering=-1, encoding='utf-8-sig') as file:
         csv_reader = csv.reader(file)
         for line in islice(csv_reader, 1, None):
             patient_id, visit_id, item_id, chart_time, value, unit = \
@@ -451,7 +451,7 @@ def get_lab_test(visit_dict, save_root, lab_test_path, code_name_path, read_from
 
     # 构建code item mapping
     code_name_map = dict()
-    with open(code_name_path, 'r', newline='') as file:
+    with open(code_name_path, 'r', newline='', encoding='utf-8-sig') as file:
         csv_reader = csv.reader(file)
         for line in islice(csv_reader, 1, None):
             lab_code, name, label = line[1: 4]
@@ -459,7 +459,7 @@ def get_lab_test(visit_dict, save_root, lab_test_path, code_name_path, read_from
 
     # lab test放弃mapping file，扫描一遍文件，选择此处发生较多的lab test
     mapping_dict = dict()
-    with open(lab_test_path, 'r', newline='') as file:
+    with open(lab_test_path, 'r', newline='', encoding='utf-8-sig') as file:
         csv_reader = csv.reader(file)
         for line in islice(csv_reader, 1, None):
             lab_code = line[3]
@@ -481,7 +481,7 @@ def get_lab_test(visit_dict, save_root, lab_test_path, code_name_path, read_from
                 lab_test_dict[patient_id][visit_id][code] = \
                     [-1, datetime.datetime(2500, 1, 1, 0, 0, 0, 0)]
 
-    with open(lab_test_path, 'r', newline='') as file:
+    with open(lab_test_path, 'r', newline='', encoding='utf-8-sig') as file:
         csv_reader = csv.reader(file)
         for line in islice(csv_reader, 1, None):
             patient_id, visit_id, lab_code, test_time, result = line[1: 6]
@@ -538,7 +538,7 @@ def get_admissions(admission_path, save_root, read_from_cache=True, file_name='a
                                                     'death_time': death_time, 'ethnicity': ethnicity}
         return visit_dict
     visit_dict = dict()
-    with open(admission_path, 'r', newline='') as file:
+    with open(admission_path, 'r', newline='', encoding='utf-8-sig') as file:
         csv_reader = csv.reader(file)
         for line in islice(csv_reader, 1, None):
             patient_id, visit_id, admit_time, discharge_time, death_time = line[1: 6]
@@ -600,7 +600,7 @@ def get_diagnosis(visit_dict, save_root, diagnosis_path, mapping_file, read_from
             for item in diagnosis_set:
                 diagnosis_dict[patient_id][visit_id][item] = 0
 
-    with open(diagnosis_path, 'r', newline='') as file:
+    with open(diagnosis_path, 'r', newline='', encoding='utf-8-sig') as file:
         csv_reader = csv.reader(file)
         for line in islice(csv_reader, 1, None):
             _, patient_id, visit_id, _, icd_code = line

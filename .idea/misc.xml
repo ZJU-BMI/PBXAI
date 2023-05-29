@@ -3,5 +3,5 @@
   <component name="JavaScriptSettings">
     <option name="languageLevel" value="ES6" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.9 (PBXAI)" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="Remote Python 3.9.16 (sftp://sunzhoujian@10.105.0.3:30136/home/sunzhoujian/miniconda3/envs/pbxai/bin/python3.9)" project-jdk-type="Python SDK" />
 </project>
